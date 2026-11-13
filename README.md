@@ -37,8 +37,8 @@ cd engine && build.cmd
 # 2. 下载知识库成品 (77.6 万卡中文维基, ~1.5GB, 存 GitHub Releases)
 python scripts/fetch_kb.py
 
-# 3. 下载微软 BitNet 权重并转换为 AIM-W 格式 (见 docs/weights.md)
-python tools/bitnet2aimw.py --help
+# 3. 下载微软 BitNet 权重 (AIM-W 转换成品, MIT, 归属见 NOTICE)
+python scripts/fetch_weights.py
 
 # 4. 起服务
 python ui/server.py        # http://127.0.0.1:8600
