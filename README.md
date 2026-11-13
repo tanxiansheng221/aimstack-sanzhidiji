@@ -124,3 +124,9 @@ python ui/server.py        # http://127.0.0.1:8600
 - support.mozilla.org 等 JS 环境检测站抓不了（技术墙，非 robots）
 - gov.cn 部分站点 SSL 证书链异常，按安全纪律拒绝而非跳过校验
 - Windows 优先（Edge 渲染级联用系统自带浏览器）；Linux 编译过，渲染级联需装 Chromium
+
+## 联系 / Contact
+
+- 商务合作 / 商业授权 / 问题反馈：**t8070824207@qq.com**
+- 运营主体：深圳市罗湖区清水河街道锋爪数创数字技术工作室（个体工商户）
+- 统一社会信用代码：92440300MAKDFBKUXT
