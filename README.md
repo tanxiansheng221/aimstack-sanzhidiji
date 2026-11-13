@@ -6,7 +6,10 @@
 
 🎬 **UI 全链演示 (6:59，在线播放)** —— 对话直答 / 知识库引答 / 联网搜索-爬取-入库-引答 / 插件总线直调，全程 2018 年双核笔记本实机录屏：
 
-![aimstack UI 演示](docs/ui_demo.mp4)
+
+
+https://github.com/user-attachments/assets/d4f897d0-001c-4dc6-b773-324c69b16a02
+
 
 ```
 你说话
