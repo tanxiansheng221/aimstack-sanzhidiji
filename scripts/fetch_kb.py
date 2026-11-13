@@ -14,8 +14,8 @@ except Exception:
 # Releases 附件直链 (版本号随 Release 更新, 见 README)
 REL = "https://github.com/tanxiansheng221/aimstack-sanzhijdii/releases/download/kb-v1"
 FILES = [
-    ("kb_cards.zip", "cards.jsonl.zip", "<MD5-发布时填写>"),
-    ("kb_fts.zip", "kb_fts.db.zip", "<MD5-发布时填写>"),
+    ("kb_cards.zip", "cards.jsonl.zip", "60a095afe7e90aababc52764db74823c"),
+    ("kb_fts.zip", "kb_fts.db.zip", "f1daef2f0ac4a27f059bdac63a13bef8"),
 ]
 HERE = os.path.dirname(os.path.abspath(__file__))
 KB = os.path.join(os.path.dirname(HERE), "kb_store")
