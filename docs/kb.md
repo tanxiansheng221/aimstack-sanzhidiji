@@ -2,15 +2,20 @@
 
 双层库设计：**base 固定底座**（维基成品，77.6 万卡）+ **dyn 动态库**（用户上传 + 爬虫增量，随时可整包更换）。检索时两库并行查、结果合并按分排序。
 
-## 成品库（推荐起步）
+## 知识库从哪来（自建）
+
+本仓库**不分发库本体**，管线全开源，两条路：
+
+**① 从维基 dump 建底座**（推荐起点，约 77.6 万卡）：
 
 ```bash
-python scripts/fetch_kb.py        # ~1.5GB, GitHub Releases 附件
+# 下载中文维基 dump (Wikimedia Downloads 或镜像站)
+python lab/kb/build_wiki_base.py <zhwiki-dump.xml.bz2>   # 解析 -> 分块 -> 查重 -> 入库 -> FTS
 ```
 
-得到 `kb_store/cards.jsonl`（418MB 卡片）+ `kb_store/kb_fts.db`（1.1GB FTS5 索引）。
+**② 从爬虫增量**：`web.ingest` 插件（见 creeper.md）按主题搜→爬→过闸→入库，底座上叠增量——这是本栈的设计用法，知识库是活的，不是死的快照。
 
-合规：内容来自中文维基百科（CC-BY-SA），每张卡 `source` 字段保留原文链接可溯源，见 NOTICE.md。
+无论哪条路，产物都是 `kb_store/cards.jsonl` + `kb_store/kb_fts.db` 两个文件，目录可整包搬移。
 
 ## 自建 / 增量
 

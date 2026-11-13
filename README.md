@@ -28,17 +28,18 @@ Python 插件 (纯 stdlib)
 ## 快速开始
 
 ```bash
-git clone https://github.com/tanxiansheng221/aimstack-sanzhijdii.git
-cd aimstack-sanzhijdii
+git clone https://github.com/tanxiansheng221/aimstack-sanzhidiji.git
+cd aimstack-sanzhidiji
 
 # 1. 编译引擎 (Windows, 双架构见 docs/engine.md)
-cd engine && build.cmd
+cd engine && build.cmd && cd ..
 
-# 2. 下载知识库成品 (77.6 万卡中文维基, ~1.5GB, 存 GitHub Releases)
-python scripts/fetch_kb.py
+# 2. 自建知识库 (中文维基 dump -> 77.6 万卡 FTS 库, 见 docs/kb.md)
+python lab/kb/build_wiki_base.py --help
 
-# 3. 下载微软 BitNet 权重 (AIM-W 转换成品, MIT, 归属见 NOTICE)
-python scripts/fetch_weights.py
+# 3. 微软 BitNet 权重: 自行下载 gguf (hf.co/microsoft/bitnet-b1.58-2B-4T, MIT,
+#    国内可走 hf-mirror.com) -> 转换为 AIM-W, 见 docs/weights.md
+python tools/bitnet2aimw.py --help
 
 # 4. 起服务
 python ui/server.py        # http://127.0.0.1:8600
@@ -91,9 +92,9 @@ python ui/server.py        # http://127.0.0.1:8600
 
 ## 权重归属声明（必读）
 
-- **BitNet b1.58 2B 权重 © Microsoft Corporation，MIT 许可**。本仓库的 AIM-W 格式（`.aimw`）只是该权重的**转换层/打包格式**，不是我们训练的模型。转换工具在 `lab/train/bitnet2aimw.py`。
+- **BitNet b1.58 2B 权重 © Microsoft Corporation，MIT 许可**。本仓库的 AIM-W 格式（`.aimw`）只是该权重的**转换层/打包格式**，不是我们训练的模型。转换工具在 `tools/bitnet2aimw.py`，权重本体请从微软官方渠道（或 hf-mirror.com 镜像）下载。
 - 自研模型（152M 等）的权重**不在本仓库发布**，本仓库只发布训练它的完整管线。
-- 维基知识库成品来自中文维基百科，**CC-BY-SA**，署名维基百科贡献者。见 [NOTICE.md](NOTICE.md)。
+- 知识库自建自中文维基 dump，**CC-BY-SA**，署名维基百科贡献者。见 [NOTICE.md](NOTICE.md)。
 
 ## 协议矩阵
 
@@ -102,7 +103,7 @@ python ui/server.py        # http://127.0.0.1:8600
 | 全部代码 | **AGPL-3.0**——把它做进你的联网产品？要么开源你的衍生，要么来谈商业授权 |
 | `lab/docs/` 研究文档 | CC-BY-NC 4.0（署名-非商业） |
 | 微软权重（外部，自行下载） | MIT，归 Microsoft |
-| 维基知识库成品（Releases） | CC-BY-SA，归维基百科贡献者 |
+| 维基内容（自建库，源自 dump） | CC-BY-SA，归维基百科贡献者 |
 
 ## 纪律
 

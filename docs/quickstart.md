@@ -1,6 +1,7 @@
 # 快速开始
 
-目标：从 clone 到跑通第一条「检索引答」的对话，10 分钟内。
+目标：clone 到起服务 10 分钟内；建知识库与转权重是两次独立的一次性准备（各约 1 小时，看带宽与机器）。
+急着想看全链：先拿几份手头 md/html 文档走 UI「文档入库」进动态库，不建底座也能跑通对话与联网全链。
 
 ## 前置条件
 
@@ -9,7 +10,7 @@
 | Windows 10+ | UI / Edge 渲染级联优先支持；Linux 可编译引擎（渲染级联需自装 Chromium） |
 | Python 3.8+ | 全部插件/服务纯 stdlib，**无需 pip install 任何东西** |
 | C 编译器 | 编译引擎用（MSVC 或 MinGW，见 engine.md） |
-| 磁盘 ~3GB | 知识库成品 1.5GB + 微软权重 0.9GB + 代码 |
+| 磁盘 ~4GB | 维基 dump + 建库 1.5GB + 微软权重 0.9GB + 代码 |
 
 ## 四步跑通
 
@@ -17,14 +18,15 @@
 # 1. 编译引擎
 cd engine && build.cmd && cd ..
 
-# 2. 知识库成品 (二选一)
-python scripts/fetch_kb.py          # 下载 77.6 万卡维基成品 (推荐)
-# 或自建: 见 docs/kb.md 「自建知识库」
+# 2. 自建知识库 (中文维基 dump -> ~77.6 万卡 FTS 库)
+#    dump 下载: Wikimedia Downloads 或镜像站 (~1GB)
+python lab/kb/build_wiki_base.py <zhwiki-dump.xml.bz2>
+# 详见 docs/kb.md (也可先用少量手头 md/html 文档试跑全链)
 
-# 3. 微软权重 -> AIM-W
-#    从 hf.co/microsoft/bitnet-b1.58-2B-4T 下载 gguf,
-#    然后: python tools/gguf2aimw.py <权重.gguf> data/m2b_tern.aimw
-#    详见 docs/weights.md
+# 3. 微软 BitNet 权重: 自行下载 gguf (MIT) -> 转 AIM-W
+#    hf.co/microsoft/bitnet-b1.58-2B-4T, 国内可走 hf-mirror.com
+python tools/bitnet2aimw.py <权重.gguf> data/m2b_tern.aimw
+# 详见 docs/weights.md
 
 # 4. 起服务
 python ui/server.py                 # http://127.0.0.1:8600

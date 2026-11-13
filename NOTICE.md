@@ -2,19 +2,18 @@
 
 本仓库包含或引用的第三方内容，按来源列明：
 
-## 1. Microsoft BitNet 权重（外部下载，不入库）
+## 1. Microsoft BitNet 权重（MIT，不分发，自行下载转换）
 
 - 模型：[microsoft/bitnet-b1.58-2B-4T](https://huggingface.co/microsoft/bitnet-b1.58-2B-4T)
 - 版权：© Microsoft Corporation，**MIT 许可**
-- 分发说明：本仓库 Releases（tag `weights-v1`）分发该权重的 **AIM-W 打包格式转换版**（`m2b_tern.aimw`）与配套分词头。MIT 许可允许再分发，本仓库保留微软版权归属声明、不修改权重数值；也可从微软官方渠道下载原始 gguf 自行转换（`tools/bitnet2aimw.py`、`tools/gguf2aimw.py`）。
+- 本仓库关系：仅提供 AIM-W（`.aimw`）打包格式的**转换工具**（`tools/bitnet2aimw.py`、`tools/gguf2aimw.py`）与推理内核实现。权重本体请从微软官方渠道下载（国内可走 hf-mirror.com 镜像），本仓库不分发、不修改权重数值。
 - "BitNet" "b1.58" 为 Microsoft 的研究成果名称，本文档中的引用仅为技术描述需要。
 
-## 2. 维基百科知识库成品（GitHub Releases 分发）
+## 2. 中文维基百科内容（自建库，源自 dump）
 
-- 内容来源：中文维基百科 dump
+- 内容来源：中文维基百科 dump（Wikimedia Downloads / 镜像）
 - 许可：**CC-BY-SA 3.0 / 4.0**（维基百科文本许可）
-- 署名：中文维基百科贡献者（每张卡的 `source` 字段保留原文链接可溯源）
-- 再分发条件：同以 CC-BY-SA 许可、保留署名与原文链接。本仓库的成品库文件（cards.jsonl + FTS 索引）满足上述条件。
+- 署名义务：自建库再分发时，需同以 CC-BY-SA 许可、保留署名与原文链接（本管线在每张卡 `source` 字段保留原文链接可溯源）。本仓库不分发库本体，由使用者按上述条款自建。
 
 ## 3. 语料上游数据集（通过脚本获取，不入库再分发）
 
