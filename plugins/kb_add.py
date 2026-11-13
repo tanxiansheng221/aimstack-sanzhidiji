@@ -11,12 +11,13 @@ try:
 except Exception:
     pass
 
-sys.path.insert(0, r"H:\AimCode\lab\cpu-native")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(_ROOT, "lab"))
 from kb.kb_core import KB
 from kb.fts_index import FtsIndex
 from kb import ingest
 
-KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", r"H:\AimCode\lab\cpu-native\kb_dyn_store")
+KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", os.path.join(_ROOT, "kb_dyn_store"))
 CARDS = os.path.join(KB_DYN, "cards.jsonl")
 
 def fts_add_new(fts, want_ids):

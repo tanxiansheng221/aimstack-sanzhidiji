@@ -13,8 +13,9 @@ try:
 except Exception:
     pass
 
-sys.path.insert(0, r"H:\AimCode\lab\cpu-native")
-sys.path.insert(0, r"H:\AimCode\aimp\plugins")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(_ROOT, "lab"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from kb.kb_core import KB
 from kb.fts_index import FtsIndex
 from creeper.serp import multi_search
@@ -23,7 +24,7 @@ from creeper.render import render_fetch
 from creeper.quality import quality
 from kb_add import fts_add_new   # 增量索引助手 (定义在 kb_add.py)
 
-KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", r"H:\AimCode\lab\cpu-native\kb_dyn_store")
+KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", os.path.join(_ROOT, "kb_dyn_store"))
 
 # 优质源白名单 (实测正文质量过硬的站排前面; 同层内保持 SERP 排序不变)
 PRIORITY = ("developer.mozilla.org", "wikipedia.org", "firefox.com", "mozilla.org",

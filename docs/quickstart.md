@@ -18,14 +18,17 @@
 # 1. 编译引擎
 cd engine && build.cmd && cd ..
 
-# 2. 自建知识库 (中文维基 dump -> ~77.6 万卡 FTS 库)
-#    dump 下载: Wikimedia Downloads 或镜像站 (~1GB)
-python lab/kb/build_wiki_base.py <zhwiki-dump.xml.bz2>
-# 详见 docs/kb.md (也可先用少量手头 md/html 文档试跑全链)
+# 2. 自建知识库 (中文维基预切块 -> ~77.6 万卡 FTS 库)
+#    切块目录内放 wiki_zh_*.jsonl.gz (每行 {"title":..., "text":...}),
+#    不传参默认读 data/wiki/; 也可先跳过此步用少量手头 md/html 走 UI「文档入库」
+python lab/kb/build_wiki_base.py <切块目录>
+# 详见 docs/kb.md
 
-# 3. 微软 BitNet 权重: 自行下载 gguf (MIT) -> 转 AIM-W
+# 3. 微软 BitNet 权重: 自行下载 gguf (MIT) -> 转 AIM-W + 分词器头
 #    hf.co/microsoft/bitnet-b1.58-2B-4T, 国内可走 hf-mirror.com
 python tools/bitnet2aimw.py <权重.gguf> data/m2b_tern.aimw
+# tokenizer.json 在该 HF 仓库里, 放到 data/bitnet2b/ 后:
+python tools/make_bnet_head.py          # -> data/m2b_llama3_head.gguf
 # 详见 docs/weights.md
 
 # 4. 起服务
@@ -49,8 +52,13 @@ python ui/server.py                 # http://127.0.0.1:8600
 | 环境变量 | 默认 | 说明 |
 |---|---|---|
 | `AIM_WORKERS` | 2（server.py 内置） | 推理引擎线程池工人数量；引擎自校准护栏会在并行不快时自动降级串行 |
-| `AIM_KB_BASE` | `../kb_store` | 固定底座库（wiki 成品）路径 |
-| `AIM_KB_DYN_ROOT` | `../kb_dyn_store` | 动态库（用户上传+爬虫增量）路径 |
+| `AIM_KB_BASE` | `<仓库>/kb_store` | 固定底座库（wiki 成品）路径 |
+| `AIM_KB_DYN_ROOT` | `<仓库>/kb_dyn_store` | 动态库（用户上传+爬虫增量）路径 |
+| `AIM_MODEL_W` | `<仓库>/data/m2b_tern.aimw` | AIM-W 三值权重（步骤 3 的转换产物） |
+| `AIM_MODEL_TOK` | `<仓库>/data/m2b_llama3_head.gguf` | 分词器头 gguf |
+| `AIM_ENGINE_EXE` | `<仓库>/engine/build/aimp_probe.exe` | 引擎可执行文件 |
+
+> 注：`tools/` 下部分 dbg/test 脚本是开发期调试工具，个别含开发机绝对路径（仅供参考读法，不在快速开始链路上）；快速开始四步链路全部仓库相对路径，clone 即可用。
 
 ## 常见问题
 

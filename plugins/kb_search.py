@@ -11,11 +11,12 @@ try:
 except Exception:
     pass
 
-sys.path.insert(0, r"H:\AimCode\lab\cpu-native")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lab"))
 from kb.fts_index import FtsIndex
 
-KB_BASE = os.environ.get("AIM_KB_BASE", r"H:\AimCode\lab\cpu-native\kb_store")
-KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", r"H:\AimCode\lab\cpu-native\kb_dyn_store")
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+KB_BASE = os.environ.get("AIM_KB_BASE", os.path.join(_ROOT, "kb_store"))
+KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", os.path.join(_ROOT, "kb_dyn_store"))
 _STOP = "的了是在呢吗什么啊呀和与对把被它们你我都"
 
 

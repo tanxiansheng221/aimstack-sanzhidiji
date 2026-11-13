@@ -10,11 +10,17 @@ try:
 except Exception:
     pass
 
-BASE = r"H:\AimCode\aimp"
-EXE = os.path.join(BASE, "build", "aimp_probe.exe")
-W = os.path.join(BASE, "data", "bitnet2b", "m2b_tern.aimw")
-TOKF = os.path.join(BASE, "data", "m2b_llama3_head.gguf")
-MINI = os.path.join(BASE, "build", "mini_llama.gguf")
+BASE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))   # 仓库根
+sys.path.insert(0, os.path.join(BASE, "lab"))
+from kb.fts_index import FtsIndex
+EXE = os.environ.get("AIM_ENGINE_EXE",
+                     os.path.join(BASE, "engine", "build", "aimp_probe.exe"))
+W = os.environ.get("AIM_MODEL_W", os.path.join(BASE, "data", "m2b_tern.aimw"))
+TOKF = os.environ.get("AIM_MODEL_TOK", os.path.join(BASE, "data", "m2b_llama3_head.gguf"))
+MINI = os.environ.get("AIM_MINI_GGUF",
+                      os.path.join(BASE, "engine", "build", "mini_llama.gguf"))
+if not os.path.exists(MINI):
+    MINI = W   # 小冒烟权重缺失时回落主模型 (--cap 不加载模型, 仅需合法路径)
 UPLOADS = os.path.join(BASE, "testdocs", "uploads")
 LOG_PATH = os.path.join(BASE, "ui", "ui_log.jsonl")
 PORT = 8600
@@ -29,11 +35,8 @@ def logj(entry):
     except Exception:
         pass
 
-sys.path.insert(0, r"H:\AimCode\lab\cpu-native")
-from kb.fts_index import FtsIndex
-
-KB_BASE = os.environ.get("AIM_KB_BASE", r"H:\AimCode\lab\cpu-native\kb_store")
-KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", r"H:\AimCode\lab\cpu-native\kb_dyn_store")
+KB_BASE = os.environ.get("AIM_KB_BASE", os.path.join(BASE, "kb_store"))
+KB_DYN = os.environ.get("AIM_KB_DYN_ROOT", os.path.join(BASE, "kb_dyn_store"))
 
 GEN_LOCK = threading.Lock()   # 模型同一时刻只进一个生成请求
 # 推理引擎线程池: 本机实测 W2 甜点 (串行 1.99 -> W2 3.20 tok/s, W4 2.63 反降);

@@ -41,12 +41,13 @@ cd aimstack-sanzhidiji
 # 1. 编译引擎 (Windows, 双架构见 docs/engine.md)
 cd engine && build.cmd && cd ..
 
-# 2. 自建知识库 (中文维基 dump -> 77.6 万卡 FTS 库, 见 docs/kb.md)
-python lab/kb/build_wiki_base.py --help
+# 2. 自建知识库 (中文维基预切块 -> FTS 库, 见 docs/kb.md)
+python lab/kb/build_wiki_base.py <切块目录>
 
 # 3. 微软 BitNet 权重: 自行下载 gguf (hf.co/microsoft/bitnet-b1.58-2B-4T, MIT,
-#    国内可走 hf-mirror.com) -> 转换为 AIM-W, 见 docs/weights.md
-python tools/bitnet2aimw.py --help
+#    国内可走 hf-mirror.com) -> 转换为 AIM-W + 分词器头, 见 docs/weights.md
+python tools/bitnet2aimw.py <权重.gguf> data/m2b_tern.aimw
+python tools/make_bnet_head.py
 
 # 4. 起服务
 python ui/server.py        # http://127.0.0.1:8600
@@ -63,8 +64,8 @@ python ui/server.py        # http://127.0.0.1:8600
 | `ui/` | 本地 Web UI | [docs/quickstart.md](docs/quickstart.md) |
 | `lab/creeper/` | 多引擎搜索 + 渲染级联 + 质量闸 | [docs/creeper.md](docs/creeper.md) |
 | `lab/kb/` | 知识库引擎 (FTS 索引/查重闸/入库) | [docs/kb.md](docs/kb.md) |
-| `lab/train/` | 完整训练管线 (无自动微分训练栈 + 语料构建器) | [docs/training.md](docs/training.md) |
-| `lab/seeds/` | 十科课程种子 | [docs/training.md](docs/training.md) |
+| `lab/train/` | 完整训练管线 (无自动微分训练栈 + 十科课程生成器 + 语料构建器) | [docs/training.md](docs/training.md) |
+| `lab/seeds/` | 实验种子 (op18 双种子 / cot_mech 复现) | [docs/training.md](docs/training.md) |
 | `lab/results/` | 实验结果 JSON (物证) | — |
 | `lab/docs/` | 117 章 CPU 原生推演全记录 + E6 负面结果档案 | 先看这个再改代码 |
 | `tools/` | 探针/基准测试脚本 | — |

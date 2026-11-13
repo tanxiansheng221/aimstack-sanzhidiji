@@ -7,8 +7,11 @@ from kb.fts_index import FtsIndex
 
 sys.stdout.reconfigure(encoding="utf-8")
 
-SRC = r"H:\AimCode\build-tools\_wikibase_v3"
-ROOT = r"H:\AimCode\lab\cpu-native\kb_store"
+_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 用法: python lab/kb/build_wiki_base.py [切块目录]  (目录内含 wiki_zh_*.jsonl.gz,
+#   每行 {"title":..., "text":...}; 不传参默认 data/wiki/)
+SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(_ROOT, "data", "wiki")
+ROOT = os.environ.get("AIM_KB_BASE", os.path.join(_ROOT, "kb_store"))
 CARDS = os.path.join(ROOT, "cards.jsonl")
 os.makedirs(ROOT, exist_ok=True)
 

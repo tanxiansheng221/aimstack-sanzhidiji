@@ -9,7 +9,7 @@ try:
 except Exception:
     pass
 
-sys.path.insert(0, r"H:\AimCode\lab\cpu-native")
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "lab"))
 from creeper.serp import multi_search
 
 def main():
