@@ -1,0 +1,32 @@
+{
+ "T_gen": 13000,
+ "checkpoints": {
+  "1": {
+   "step": 13000,
+   "train": 1.0,
+   "val": 0.9518,
+   "ood": 0.496,
+   "margin": 5.3473,
+   "ood_margin": 8.5927
+  },
+  "40": {
+   "step": 520000,
+   "train": 1.0,
+   "val": 1.0,
+   "ood": 0.505,
+   "margin": 15.2547,
+   "ood_margin": 15.8214
+  },
+  "140": {
+   "step": 1820000,
+   "train": 1.0,
+   "val": 1.0,
+   "ood": 0.505,
+   "margin": 16.4911,
+   "ood_margin": 16.9674
+  }
+ },
+ "engine": "torch",
+ "seed": 1,
+ "tag": "s1"
+}

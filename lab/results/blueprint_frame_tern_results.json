@@ -1,0 +1,488 @@
+{
+ "tern_raw": {
+  "final": {
+   "top1": {
+    "nll_bits": 0.3907,
+    "acc": 1.0,
+    "exact4": 1.0
+   },
+   "random": {
+    "nll_bits": 4.5521,
+    "acc": 0.0256,
+    "exact4": 0.0
+   },
+   "none": {
+    "nll_bits": 3.5602,
+    "acc": 0.0434,
+    "exact4": 0.0
+   },
+   "fakekey": {
+    "nll_bits": 3.5612,
+    "acc": 0.0423,
+    "exact4": 0.0
+   }
+  },
+  "traj": [
+   [
+    500,
+    {
+     "top1": {
+      "nll_bits": 0.4253,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.67,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.6013,
+      "acc": 0.0293,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.6014,
+      "acc": 0.0281,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    1000,
+    {
+     "top1": {
+      "nll_bits": 0.414,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.6388,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.596,
+      "acc": 0.0294,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5961,
+      "acc": 0.0285,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    1500,
+    {
+     "top1": {
+      "nll_bits": 0.4308,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5549,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5885,
+      "acc": 0.0326,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5886,
+      "acc": 0.0312,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    2000,
+    {
+     "top1": {
+      "nll_bits": 0.4089,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.582,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5803,
+      "acc": 0.0356,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5806,
+      "acc": 0.0351,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    2500,
+    {
+     "top1": {
+      "nll_bits": 0.3878,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.6037,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5765,
+      "acc": 0.034,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5771,
+      "acc": 0.0328,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    3000,
+    {
+     "top1": {
+      "nll_bits": 0.3796,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.6013,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5707,
+      "acc": 0.0384,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5712,
+      "acc": 0.0382,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    3500,
+    {
+     "top1": {
+      "nll_bits": 0.3694,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.6101,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5644,
+      "acc": 0.0419,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.565,
+      "acc": 0.0424,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    4000,
+    {
+     "top1": {
+      "nll_bits": 0.3907,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5521,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5602,
+      "acc": 0.0434,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5612,
+      "acc": 0.0423,
+      "exact4": 0.0
+     }
+    }
+   ]
+  ],
+  "dumps": {
+   "top1": [
+    "[top1] ctx=~~OG2SWTYYNW tgt=ZE3M pred=ZE3M",
+    "[top1] ctx=~~2DDWC10UAJ tgt=4HVO pred=4HVO",
+    "[top1] ctx=~~Y911Z4J2CG tgt=TGRQ pred=TGRQ"
+   ],
+   "none": [
+    "[none] ctx=~~OG2SWTYYNW tgt=ZE3M pred=00A0",
+    "[none] ctx=~~2DDWC10UAJ tgt=4HVO pred=3HXU",
+    "[none] ctx=~~Y911Z4J2CG tgt=TGRQ pred=32A3"
+   ],
+   "fakekey": [
+    "[fakekey] ctx=~~VG2SWTYYNW tgt=ZE3M pred=00A0",
+    "[fakekey] ctx=~~9DDWC10UAJ tgt=4HVO pred=3HXU",
+    "[fakekey] ctx=~~`911Z4J2CG tgt=TGRQ pred=32A3"
+   ]
+  }
+ },
+ "tern_distill": {
+  "final": {
+   "top1": {
+    "nll_bits": 0.3925,
+    "acc": 1.0,
+    "exact4": 1.0
+   },
+   "random": {
+    "nll_bits": 4.5496,
+    "acc": 0.0256,
+    "exact4": 0.0
+   },
+   "none": {
+    "nll_bits": 3.5656,
+    "acc": 0.0421,
+    "exact4": 0.0
+   },
+   "fakekey": {
+    "nll_bits": 3.5684,
+    "acc": 0.0403,
+    "exact4": 0.0
+   }
+  },
+  "traj": [
+   [
+    500,
+    {
+     "top1": {
+      "nll_bits": 0.3486,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.7211,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5954,
+      "acc": 0.0295,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5955,
+      "acc": 0.0299,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    1000,
+    {
+     "top1": {
+      "nll_bits": 0.4051,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5886,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5865,
+      "acc": 0.0319,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5873,
+      "acc": 0.0306,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    1500,
+    {
+     "top1": {
+      "nll_bits": 0.4072,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5628,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.578,
+      "acc": 0.0354,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5791,
+      "acc": 0.0364,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    2000,
+    {
+     "top1": {
+      "nll_bits": 0.3878,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5949,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5741,
+      "acc": 0.0374,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5758,
+      "acc": 0.0362,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    2500,
+    {
+     "top1": {
+      "nll_bits": 0.3946,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5679,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5713,
+      "acc": 0.0394,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5735,
+      "acc": 0.0393,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    3000,
+    {
+     "top1": {
+      "nll_bits": 0.3813,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5882,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5696,
+      "acc": 0.0391,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5717,
+      "acc": 0.0392,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    3500,
+    {
+     "top1": {
+      "nll_bits": 0.4078,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5245,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5677,
+      "acc": 0.0396,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5698,
+      "acc": 0.0406,
+      "exact4": 0.0
+     }
+    }
+   ],
+   [
+    4000,
+    {
+     "top1": {
+      "nll_bits": 0.3925,
+      "acc": 1.0,
+      "exact4": 1.0
+     },
+     "random": {
+      "nll_bits": 4.5496,
+      "acc": 0.0256,
+      "exact4": 0.0
+     },
+     "none": {
+      "nll_bits": 3.5656,
+      "acc": 0.0421,
+      "exact4": 0.0
+     },
+     "fakekey": {
+      "nll_bits": 3.5684,
+      "acc": 0.0403,
+      "exact4": 0.0
+     }
+    }
+   ]
+  ],
+  "dumps": {
+   "top1": [
+    "[top1] ctx=~~OG2SWTYYNW tgt=ZE3M pred=ZE3M",
+    "[top1] ctx=~~2DDWC10UAJ tgt=4HVO pred=4HVO",
+    "[top1] ctx=~~Y911Z4J2CG tgt=TGRQ pred=TGRQ"
+   ],
+   "none": [
+    "[none] ctx=~~OG2SWTYYNW tgt=ZE3M pred=LFA6",
+    "[none] ctx=~~2DDWC10UAJ tgt=4HVO pred=CX94",
+    "[none] ctx=~~Y911Z4J2CG tgt=TGRQ pred=AAAX"
+   ],
+   "fakekey": [
+    "[fakekey] ctx=~~VG2SWTYYNW tgt=ZE3M pred=L7G6",
+    "[fakekey] ctx=~~9DDWC10UAJ tgt=4HVO pred=CX99",
+    "[fakekey] ctx=~~`911Z4J2CG tgt=TGRQ pred=XXAX"
+   ]
+  }
+ }
+}

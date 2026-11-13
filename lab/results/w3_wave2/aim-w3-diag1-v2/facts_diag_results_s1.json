@@ -1,0 +1,30 @@
+{
+ "base": {
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.105,
+  "val_loose": 0.101
+ },
+ "A_signed": {
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.089,
+  "val_loose": 0.083
+ },
+ "C_nopad": {
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.318,
+  "val_loose": 0.274
+ },
+ "B_skip": {
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.074,
+  "val_loose": 0.049
+ }
+}

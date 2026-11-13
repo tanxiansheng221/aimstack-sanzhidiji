@@ -1,0 +1,38 @@
+# runtime / generated
+__pycache__/
+*.pyc
+*.log
+*.err
+
+# weights & model artifacts (all excluded from repo)
+*.aimw
+*.gguf
+*.npz
+*.pt
+*.ckpt
+*.safetensors
+
+# knowledge base stores (download via scripts/fetch_kb.py, or build yourself)
+kb_store/
+kb_dyn_store/
+open_corpus/
+*_corpus/
+esconv/
+cped_corpus/
+
+# uploads & runtime state
+testdocs/
+uploads/
+.aimcode/
+ui_log.jsonl
+
+# large data mixes (regenerate with lab/train/build_*.py)
+*.jsonl
+!plugins/**/*.jsonl
+seg_*.npz
+_replay_*
+
+# editor / os
+.vscode/
+Thumbs.db
+.DS_Store

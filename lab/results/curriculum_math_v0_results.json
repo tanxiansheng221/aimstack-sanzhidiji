@@ -1,0 +1,23 @@
+{
+ "G1_dual_channel": {
+  "total": 600,
+  "bad": 0,
+  "pass": true
+ },
+ "G2_poison_failclosed": {
+  "total": 297,
+  "caught": 297,
+  "pass": true
+ },
+ "G3_determinism": {
+  "pass": true
+ },
+ "G4_trainval_split": {
+  "pass": true
+ },
+ "ALL_PASS": true,
+ "export": {
+  "records": 1700,
+  "sha256": "e53e73cb677df761"
+ }
+}

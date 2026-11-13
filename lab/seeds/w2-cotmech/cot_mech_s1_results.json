@@ -1,0 +1,14 @@
+{
+ "control_full": {
+  "acc_h1": 1.0,
+  "acc_y1": 0.9993
+ },
+ "mask_y4_src3": {
+  "acc_h1": 1.0,
+  "acc_y1": 0.989
+ },
+ "mask_y4_src0_a": {
+  "acc_h1": 1.0,
+  "acc_y1": 0.009
+ }
+}

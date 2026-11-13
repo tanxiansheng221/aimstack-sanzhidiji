@@ -1,0 +1,9 @@
+{
+ "params": 192336,
+ "H": 256,
+ "steps": 5000,
+ "train_loose": 0.997,
+ "val_loose": 0.095,
+ "train_exact": 0.99,
+ "val_exact": 0.004
+}

@@ -1,0 +1,18 @@
+{
+ "E_bag3_conj": {
+  "params": 50008,
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.217,
+  "val_loose": 0.089
+ },
+ "E_bag4_free": {
+  "params": 74716,
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.254,
+  "val_loose": 0.114
+ }
+}

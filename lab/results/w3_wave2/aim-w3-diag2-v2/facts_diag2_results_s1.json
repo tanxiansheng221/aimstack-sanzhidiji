@@ -1,0 +1,16 @@
+{
+ "E_bag2": {
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.086,
+  "val_loose": 0.075
+ },
+ "F_ratio1": {
+  "train_exact": 0.0,
+  "train_name": 0.0,
+  "val_exact": 0.0,
+  "train_loose": 0.064,
+  "val_loose": 0.051
+ }
+}

@@ -1,0 +1,42 @@
+{
+ "n_facts": 10000,
+ "S_facts": 45150.84951819779,
+ "results": [
+  {
+   "params": 16228,
+   "train_recall": 0.6456,
+   "val_recall": 0.101,
+   "bits_per_param": 0.281
+  },
+  {
+   "params": 32420,
+   "train_recall": 1.0,
+   "val_recall": 0.107,
+   "bits_per_param": 0.149
+  },
+  {
+   "params": 64804,
+   "train_recall": 1.0,
+   "val_recall": 0.1015,
+   "bits_per_param": 0.071
+  },
+  {
+   "params": 129572,
+   "train_recall": 1.0,
+   "val_recall": 0.123,
+   "bits_per_param": 0.043
+  },
+  {
+   "params": 259108,
+   "train_recall": 1.0,
+   "val_recall": 0.124,
+   "bits_per_param": 0.022
+  },
+  {
+   "params": 518180,
+   "train_recall": 1.0,
+   "val_recall": 0.1245,
+   "bits_per_param": 0.011
+  }
+ ]
+}

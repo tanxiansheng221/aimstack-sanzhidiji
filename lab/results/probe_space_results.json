@@ -1,0 +1,58 @@
+{
+ "curriculum_math_lab": {
+  "file": "curriculum_math_v0.jsonl",
+  "train": 20000,
+  "unique": 16898,
+  "uniq_rate": 0.8449,
+  "strategy": "NEED_WIDEN"
+ },
+ "curriculum_plan_lab": {
+  "file": "curriculum_plan_v0.jsonl",
+  "train": 20000,
+  "unique": 19976,
+  "uniq_rate": 0.9988,
+  "strategy": "PULL_N"
+ },
+ "curriculum_causal_lab": {
+  "file": "curriculum_causal_v0.jsonl",
+  "train": 20000,
+  "unique": 1726,
+  "uniq_rate": 0.0863,
+  "strategy": "NEED_WIDEN"
+ },
+ "curriculum_csp_lab": {
+  "file": "curriculum_csp_v0.jsonl",
+  "train": 20000,
+  "unique": 16190,
+  "uniq_rate": 0.8095,
+  "strategy": "NEED_WIDEN"
+ },
+ "curriculum_progexec_lab": {
+  "file": "curriculum_progexec_v0.jsonl",
+  "train": 20000,
+  "unique": 20000,
+  "uniq_rate": 1.0,
+  "strategy": "PULL_N"
+ },
+ "curriculum_seqind_lab": {
+  "file": "curriculum_seqind_v0.jsonl",
+  "train": 20000,
+  "unique": 6344,
+  "uniq_rate": 0.3172,
+  "strategy": "NEED_WIDEN"
+ },
+ "curriculum_logic_lab": {
+  "file": "curriculum_logic_v0.jsonl",
+  "train": 20000,
+  "unique": 11743,
+  "uniq_rate": 0.5871,
+  "strategy": "NEED_WIDEN"
+ },
+ "curriculum_fsm_lab": {
+  "file": "curriculum_fsm_v0.jsonl",
+  "train": 20000,
+  "unique": 19999,
+  "uniq_rate": 1.0,
+  "strategy": "PULL_N"
+ }
+}

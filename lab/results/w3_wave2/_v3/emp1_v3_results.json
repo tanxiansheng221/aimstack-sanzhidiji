@@ -1,0 +1,43 @@
+{
+ "template_ceiling": 0.037,
+ "n": 108,
+ "gen": {
+  "emotion_hit": 0.0,
+  "followup": 0.0,
+  "length_ok": 0.0,
+  "safety": 1.0,
+  "fmt_ok": 0.0
+ },
+ "samples": [
+  {
+   "user": "房租涨了，我担心这个月钱不够",
+   "gold": "You don't have to carry this alone. Anyone would feel this way. What would help you most right now?",
+   "gen": "y"
+  },
+  {
+   "user": "家里和工作的矛盾夹着我，喘不过气",
+   "gold": "接下来你打算怎么安排？这真的不容易。换成谁遇到这种事都会这样的。先照顾好自己，别急着想别的。",
+   "gen": "�"
+  },
+  {
+   "user": "照顾病人一个月，我快撑不动了",
+   "gold": "你的感受是真实且值得被认真对待的。你现在最想聊哪一部分？不管结果怎样，你都不用一个人扛。",
+   "gen": "�"
+  },
+  {
+   "user": "我被无缘无故骂了一顿",
+   "gold": "Is there someone around who can support you? Thank you for trusting me with this.",
+   "gen": "'"
+  },
+  {
+   "user": "我被无缘无故骂了一顿",
+   "gold": "你现在最想聊哪一部分？谢谢你愿意告诉我这些。如果愿意多说一点，我一直在听。有这种情绪很正常，不用责怪自己。",
+   "gen": "�"
+  },
+  {
+   "user": "排队两小时结果被告知排错了",
+   "gold": "Thank you for trusting me with this. I'm here whenever you want to talk more. Is there someone around who can support you? Your feelings are valid.",
+   "gen": "a"
+  }
+ ]
+}

@@ -1,0 +1,7 @@
+{
+  "kb.search": "python H:/AimCode/aimp/plugins/kb_search.py %s",
+  "web.search": "python H:/AimCode/aimp/plugins/web_search.py %s",
+  "demo.time": "python H:/AimCode/aimp/plugins/demo_time.py %s",
+  "kb.add": "python H:/AimCode/aimp/plugins/kb_add.py %s",
+  "web.ingest": "python H:/AimCode/aimp/plugins/web_ingest.py %s"
+}

@@ -1,0 +1,185 @@
+{
+ "curve": [
+  {
+   "step": 2000,
+   "loss": 0.1655,
+   "per_lang": {
+    "en": {
+     "val_exact": 0.0,
+     "ans_exact": 0.52
+    },
+    "zh": {
+     "val_exact": 0.02,
+     "ans_exact": 0.48
+    },
+    "es": {
+     "val_exact": 0.01,
+     "ans_exact": 0.39
+    },
+    "ar": {
+     "val_exact": 0.03,
+     "ans_exact": 0.42
+    },
+    "ru": {
+     "val_exact": 0.02,
+     "ans_exact": 0.49
+    },
+    "ja": {
+     "val_exact": 0.0,
+     "ans_exact": 0.5
+    }
+   }
+  },
+  {
+   "step": 4000,
+   "loss": 0.0478,
+   "per_lang": {
+    "en": {
+     "val_exact": 0.01,
+     "ans_exact": 0.48
+    },
+    "zh": {
+     "val_exact": 0.03,
+     "ans_exact": 0.48
+    },
+    "es": {
+     "val_exact": 0.03,
+     "ans_exact": 0.34
+    },
+    "ar": {
+     "val_exact": 0.02,
+     "ans_exact": 0.49
+    },
+    "ru": {
+     "val_exact": 0.0,
+     "ans_exact": 0.42
+    },
+    "ja": {
+     "val_exact": 0.02,
+     "ans_exact": 0.45
+    }
+   }
+  },
+  {
+   "step": 6000,
+   "loss": 0.0017,
+   "per_lang": {
+    "en": {
+     "val_exact": 0.01,
+     "ans_exact": 0.49
+    },
+    "zh": {
+     "val_exact": 0.03,
+     "ans_exact": 0.47
+    },
+    "es": {
+     "val_exact": 0.02,
+     "ans_exact": 0.36
+    },
+    "ar": {
+     "val_exact": 0.01,
+     "ans_exact": 0.46
+    },
+    "ru": {
+     "val_exact": 0.0,
+     "ans_exact": 0.42
+    },
+    "ja": {
+     "val_exact": 0.02,
+     "ans_exact": 0.43
+    }
+   }
+  },
+  {
+   "step": 8000,
+   "loss": 0.0002,
+   "per_lang": {
+    "en": {
+     "val_exact": 0.01,
+     "ans_exact": 0.53
+    },
+    "zh": {
+     "val_exact": 0.03,
+     "ans_exact": 0.46
+    },
+    "es": {
+     "val_exact": 0.01,
+     "ans_exact": 0.35
+    },
+    "ar": {
+     "val_exact": 0.01,
+     "ans_exact": 0.48
+    },
+    "ru": {
+     "val_exact": 0.0,
+     "ans_exact": 0.43
+    },
+    "ja": {
+     "val_exact": 0.02,
+     "ans_exact": 0.45
+    }
+   }
+  },
+  {
+   "step": 10000,
+   "loss": 0.0001,
+   "per_lang": {
+    "en": {
+     "val_exact": 0.01,
+     "ans_exact": 0.52
+    },
+    "zh": {
+     "val_exact": 0.03,
+     "ans_exact": 0.46
+    },
+    "es": {
+     "val_exact": 0.01,
+     "ans_exact": 0.36
+    },
+    "ar": {
+     "val_exact": 0.01,
+     "ans_exact": 0.48
+    },
+    "ru": {
+     "val_exact": 0.0,
+     "ans_exact": 0.43
+    },
+    "ja": {
+     "val_exact": 0.03,
+     "ans_exact": 0.45
+    }
+   }
+  },
+  {
+   "step": 12000,
+   "loss": 0.0001,
+   "per_lang": {
+    "en": {
+     "val_exact": 0.01,
+     "ans_exact": 0.52
+    },
+    "zh": {
+     "val_exact": 0.03,
+     "ans_exact": 0.47
+    },
+    "es": {
+     "val_exact": 0.01,
+     "ans_exact": 0.36
+    },
+    "ar": {
+     "val_exact": 0.01,
+     "ans_exact": 0.48
+    },
+    "ru": {
+     "val_exact": 0.0,
+     "ans_exact": 0.43
+    },
+    "ja": {
+     "val_exact": 0.03,
+     "ans_exact": 0.44
+    }
+   }
+  }
+ ],
+ "wall": 5071.4
+}

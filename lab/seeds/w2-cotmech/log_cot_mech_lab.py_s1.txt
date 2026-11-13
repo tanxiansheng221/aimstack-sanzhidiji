@@ -1,0 +1,12 @@
+=== EXPERIMENT P2: mechanism attribution (mask query4 <- source3) ===
+training COT (same seed/config as exp P)...
+  step  1000 {'acc_h1': 0.916, 'acc_y1': 0.4023} (92s)
+  step  2000 {'acc_h1': 0.9956, 'acc_y1': 0.9731} (178s)
+  step  3000 {'acc_h1': 1.0, 'acc_y1': 0.998} (265s)
+  step  4000 {'acc_h1': 1.0, 'acc_y1': 0.9985} (353s)
+  step  5000 {'acc_h1': 1.0, 'acc_y1': 0.9985} (440s)
+  step  6000 {'acc_h1': 1.0, 'acc_y1': 0.9985} (527s)
+control (no mask):        {'acc_h1': 1.0, 'acc_y1': 0.9993}
+mask pos4<-pos3 (KEY):    {'acc_h1': 1.0, 'acc_y1': 0.989}
+mask pos4<-pos0 (a ctrl): {'acc_h1': 1.0, 'acc_y1': 0.009}
+saved cot_mech_s1_results.json

@@ -1,0 +1,167 @@
+{
+ "teacher": {
+  "final": {
+   "nll_bits": 2.4223,
+   "acc": 0.3933,
+   "exact4_oneshot": 0.0,
+   "exact4_refine": 0.2065
+  },
+  "traj": [
+   [
+    1000,
+    {
+     "nll_bits": 2.7257,
+     "acc": 0.3318,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1602
+    }
+   ],
+   [
+    2000,
+    {
+     "nll_bits": 2.6113,
+     "acc": 0.3635,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1875
+    }
+   ],
+   [
+    3000,
+    {
+     "nll_bits": 2.5252,
+     "acc": 0.3755,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1943
+    }
+   ],
+   [
+    4000,
+    {
+     "nll_bits": 2.4737,
+     "acc": 0.3862,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.207
+    }
+   ],
+   [
+    5000,
+    {
+     "nll_bits": 2.4545,
+     "acc": 0.3896,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.2061
+    }
+   ]
+  ]
+ },
+ "tern_raw": {
+  "final": {
+   "nll_bits": 2.4961,
+   "acc": 0.3779,
+   "exact4_oneshot": 0.0,
+   "exact4_refine": 0.1968
+  },
+  "traj": [
+   [
+    1000,
+    {
+     "nll_bits": 2.7488,
+     "acc": 0.3337,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1719
+    }
+   ],
+   [
+    2000,
+    {
+     "nll_bits": 2.6443,
+     "acc": 0.3501,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1826
+    }
+   ],
+   [
+    3000,
+    {
+     "nll_bits": 2.5892,
+     "acc": 0.3633,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1914
+    }
+   ],
+   [
+    4000,
+    {
+     "nll_bits": 2.5492,
+     "acc": 0.3662,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.2021
+    }
+   ],
+   [
+    5000,
+    {
+     "nll_bits": 2.5288,
+     "acc": 0.3757,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1953
+    }
+   ]
+  ]
+ },
+ "tern_distill": {
+  "final": {
+   "nll_bits": 2.4526,
+   "acc": 0.3861,
+   "exact4_oneshot": 0.0,
+   "exact4_refine": 0.2036
+  },
+  "traj": [
+   [
+    1000,
+    {
+     "nll_bits": 2.6926,
+     "acc": 0.3472,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1729
+    }
+   ],
+   [
+    2000,
+    {
+     "nll_bits": 2.5762,
+     "acc": 0.3669,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1865
+    }
+   ],
+   [
+    3000,
+    {
+     "nll_bits": 2.5142,
+     "acc": 0.3752,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.1973
+    }
+   ],
+   [
+    4000,
+    {
+     "nll_bits": 2.4923,
+     "acc": 0.3843,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.2021
+    }
+   ],
+   [
+    5000,
+    {
+     "nll_bits": 2.4805,
+     "acc": 0.386,
+     "exact4_oneshot": 0.0,
+     "exact4_refine": 0.2051
+    }
+   ]
+  ]
+ }
+}

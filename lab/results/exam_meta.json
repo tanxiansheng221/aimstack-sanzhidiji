@@ -1,0 +1,98 @@
+{
+ "subjects": [
+  "replay_creative",
+  "replay_emp2",
+  "replay_refusal",
+  "v2_causal",
+  "v2_csp",
+  "v2_fsm",
+  "v2_graph",
+  "v2_logic",
+  "v2_math",
+  "v2_mod_arith",
+  "v2_plan",
+  "v2_progexec",
+  "v2_seqind"
+ ],
+ "meta": {
+  "replay_creative": {
+   "si": 0,
+   "short": "creative",
+   "exam_n": 300,
+   "focus_windows": 1427
+  },
+  "replay_emp2": {
+   "si": 1,
+   "short": "emp2",
+   "exam_n": 300,
+   "focus_windows": 1355
+  },
+  "replay_refusal": {
+   "si": 2,
+   "short": "refusal",
+   "exam_n": 300,
+   "focus_windows": 1492
+  },
+  "v2_causal": {
+   "si": 3,
+   "short": "causal",
+   "exam_n": 300,
+   "focus_windows": 1178
+  },
+  "v2_csp": {
+   "si": 4,
+   "short": "csp",
+   "exam_n": 300,
+   "focus_windows": 1095
+  },
+  "v2_fsm": {
+   "si": 5,
+   "short": "fsm",
+   "exam_n": 300,
+   "focus_windows": 1457
+  },
+  "v2_graph": {
+   "si": 6,
+   "short": "graph",
+   "exam_n": 300,
+   "focus_windows": 1439
+  },
+  "v2_logic": {
+   "si": 7,
+   "short": "logic",
+   "exam_n": 300,
+   "focus_windows": 1066
+  },
+  "v2_math": {
+   "si": 8,
+   "short": "math",
+   "exam_n": 300,
+   "focus_windows": 639
+  },
+  "v2_mod_arith": {
+   "si": 9,
+   "short": "mod_arith",
+   "exam_n": 300,
+   "focus_windows": 431
+  },
+  "v2_plan": {
+   "si": 10,
+   "short": "plan",
+   "exam_n": 300,
+   "focus_windows": 1448
+  },
+  "v2_progexec": {
+   "si": 11,
+   "short": "progexec",
+   "exam_n": 300,
+   "focus_windows": 1266
+  },
+  "v2_seqind": {
+   "si": 12,
+   "short": "seqind",
+   "exam_n": 300,
+   "focus_windows": 651
+  }
+ },
+ "exam_total": 3900
+}

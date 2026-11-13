@@ -1,0 +1,80 @@
+{
+ "replay_creative": {
+  "short": "creative",
+  "windows": 1622,
+  "pool_windows": 1427,
+  "replay_windows": 195
+ },
+ "replay_emp2": {
+  "short": "emp2",
+  "windows": 1556,
+  "pool_windows": 1355,
+  "replay_windows": 201
+ },
+ "replay_refusal": {
+  "short": "refusal",
+  "windows": 1698,
+  "pool_windows": 1492,
+  "replay_windows": 206
+ },
+ "v2_causal": {
+  "short": "causal",
+  "windows": 1376,
+  "pool_windows": 1178,
+  "replay_windows": 198
+ },
+ "v2_csp": {
+  "short": "csp",
+  "windows": 1294,
+  "pool_windows": 1095,
+  "replay_windows": 199
+ },
+ "v2_fsm": {
+  "short": "fsm",
+  "windows": 1656,
+  "pool_windows": 1457,
+  "replay_windows": 199
+ },
+ "v2_graph": {
+  "short": "graph",
+  "windows": 1639,
+  "pool_windows": 1439,
+  "replay_windows": 200
+ },
+ "v2_logic": {
+  "short": "logic",
+  "windows": 1262,
+  "pool_windows": 1066,
+  "replay_windows": 196
+ },
+ "v2_math": {
+  "short": "math",
+  "windows": 833,
+  "pool_windows": 639,
+  "replay_windows": 194
+ },
+ "v2_mod_arith": {
+  "short": "mod_arith",
+  "windows": 627,
+  "pool_windows": 431,
+  "replay_windows": 196
+ },
+ "v2_plan": {
+  "short": "plan",
+  "windows": 1646,
+  "pool_windows": 1448,
+  "replay_windows": 198
+ },
+ "v2_progexec": {
+  "short": "progexec",
+  "windows": 1459,
+  "pool_windows": 1266,
+  "replay_windows": 193
+ },
+ "v2_seqind": {
+  "short": "seqind",
+  "windows": 844,
+  "pool_windows": 651,
+  "replay_windows": 193
+ }
+}
