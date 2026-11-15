@@ -20,7 +20,7 @@ UI (server.py, 纯 stdlib)          ← 本地 127.0.0.1:8600
   ▼
 C 引擎 (engine/, 纯 C, 零第三方运行时)
   ├─ 三值推理核 (BitNet b1.58 式 2-bit 打包 + SIMD 快路径)
-  ├─ 自研分词器 (字节级 + BPE)
+  ├─ 分词器 (自研: 字节级 + BPE；第三方权重请用配套的微软官方分词器, 见下)
   └─ 插件总线 (约百行 C: caps.json 注册表 → 拉起 Python 插件 → JSON 信封)
         │
         ▼
@@ -54,6 +54,10 @@ python ui/server.py        # http://127.0.0.1:8600
 ```
 
 详细说明：[docs/quickstart.md](docs/quickstart.md)
+
+> **分词器怎么选（重要）**
+> - 跑**第三方权重**（如微软 BitNet b1.58-2B-4T）时，请使用配套的**微软官方分词器**：`tools/llama3_tok.py`。它是 Llama-3 BPE 的纯 stdlib 实现，读取微软官方 `tokenizer.json`（从 hf.co/microsoft/bitnet-b1.58-2B-4T 下载，国内走 hf-mirror.com，放到 `data/bitnet2b/tokenizer.json`），编码/解码与官方输出对齐。
+> - 引擎内置的**自研 C 分词器**（`engine/tokenizer.c`，字节级 + BPE）目前只在有限样本上与参考实现做过逐 token 对账（`tools/check_tok.py`），**尚未完成全量验证**。跑第三方权重请以官方分词器为准；自研分词器主要用于自研模型（152M 等）的实验闭环。
 
 ## 目录
 
