@@ -63,16 +63,18 @@ python ui/server.py        # http://127.0.0.1:8600
 
 | 目录 | 内容 | 说明书 |
 |---|---|---|
-| `engine/` | C 推理引擎 + 三值核 + 分词器 + 插件总线 | [docs/engine.md](docs/engine.md) |
-| `plugins/` | 5 个 Python 插件 + caps.json 注册表 | [docs/bus.md](docs/bus.md) |
-| `ui/` | 本地 Web UI | [docs/quickstart.md](docs/quickstart.md) |
-| `lab/creeper/` | 多引擎搜索 + 渲染级联 + 质量闸 | [docs/creeper.md](docs/creeper.md) |
-| `lab/kb/` | 知识库引擎 (FTS 索引/查重闸/入库) | [docs/kb.md](docs/kb.md) |
-| `lab/train/` | 完整训练管线 (无自动微分训练栈 + 十科课程生成器 + 语料构建器) | [docs/training.md](docs/training.md) |
+| `engine/` | C 推理引擎 + 三值核 + 分词器 + 插件总线 | [中文](docs/engine.md) · [EN](docs/engine.en.md) |
+| `plugins/` | 5 个 Python 插件 + caps.json 注册表 | [中文](docs/bus.md) · [EN](docs/bus.en.md) |
+| `ui/` | 本地 Web UI | [中文](docs/quickstart.md) · [EN](docs/quickstart.en.md) |
+| `lab/creeper/` | 多引擎搜索 + 渲染级联 + 质量闸 | [中文](docs/creeper.md) · [EN](docs/creeper.en.md) |
+| `lab/kb/` | 知识库引擎 (FTS 索引/查重闸/入库) | [中文](docs/kb.md) · [EN](docs/kb.en.md) |
+| `lab/train/` | 完整训练管线 (无自动微分训练栈 + 十科课程生成器 + 语料构建器) | [中文](docs/training.md) · [EN](docs/training.en.md) · [corpus](docs/corpus.md)/[EN](docs/corpus.en.md) |
 | `lab/seeds/` | 实验种子 (op18 双种子 / cot_mech 复现) | [docs/training.md](docs/training.md) |
 | `lab/results/` | 实验结果 JSON (物证) | — |
 | `lab/docs/` | 117 章 CPU 原生推演全记录 + E6 负面结果档案 | 先看这个再改代码 |
 | `tools/` | 探针/基准测试脚本 | — |
+
+> All manuals above have English versions (`*.en.md`) — 中文版与英文版内容同源同步。
 
 ## 硬件宣言：2018 年的笔记本兜住了下限
 
