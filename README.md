@@ -99,6 +99,12 @@ Numbers this machine actually held:
 
 **Positive and negative results ship together** — the negative-results dossier (E6_CAMPAIGN_AND_RECIPE_DOSSIER) may be the most valuable part of this repo.
 
+## The research log (117 chapters, written as it happened)
+
+The entire stack has a complete first-person build journal: [lab/docs/CPU_NATIVE_DEDUCTION.md](lab/docs/CPU_NATIVE_DEDUCTION.md) — every design decision, every measured number, every failed idea, in real time. It is the primary source behind every claim in this README: the SIMD bring-up and the 0.9 → 3.2 tok/s campaign, the bit-exact reconciliation discipline, the speculative-decoding register-budget analysis, and the negative-results archive.
+
+**English readers**: start with the [Research Log Overview & Chapter Map](lab/docs/RESEARCH_LOG_OVERVIEW.en.md) — headline results, a chapter map ("if you want to know X, read Y"), and why the original ships in Chinese. The log itself is CC-BY-NC 4.0.
+
 ## Weight attribution notice (must read)
 
 - **BitNet b1.58 2B weights © Microsoft Corporation, MIT license**. The AIM-W format (`.aimw`) in this repo is only a **conversion layer / packing format** for those weights, not a model we trained. The converter is `tools/bitnet2aimw.py`; download the weights from Microsoft's official channel (or the hf-mirror.com mirror).
