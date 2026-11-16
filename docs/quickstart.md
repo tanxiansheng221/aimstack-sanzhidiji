@@ -1,68 +1,69 @@
-# 快速开始
+# Quick Start
 
-目标：clone 到起服务 10 分钟内；建知识库与转权重是两次独立的一次性准备（各约 1 小时，看带宽与机器）。
-急着想看全链：先拿几份手头 md/html 文档走 UI「文档入库」进动态库，不建底座也能跑通对话与联网全链。
+Goal: from clone to running server within 10 minutes. Building the knowledge base and converting weights are two independent one-time preparations (about 1 hour each, depending on bandwidth and machine).
+Impatient? Feed a few local md/html documents through the UI's "Document Ingest" into the dynamic store — chat and full web-search chain work without the base library.
 
-## 前置条件
+## Prerequisites
 
-| 需要 | 说明 |
+| Requirement | Notes |
 |---|---|
-| Windows 10+ | UI / Edge 渲染级联优先支持；Linux 可编译引擎（渲染级联需自装 Chromium） |
-| Python 3.8+ | 全部插件/服务纯 stdlib，**无需 pip install 任何东西** |
-| C 编译器 | 编译引擎用（MSVC 或 MinGW，见 engine.md） |
-| 磁盘 ~4GB | 维基 dump + 建库 1.5GB + 微软权重 0.9GB + 代码 |
+| Windows 10+ | UI / Edge render cascade first; Linux can compile the engine (render cascade needs Chromium installed) |
+| Python 3.8+ | All plugins/services are pure stdlib — **no pip install needed** |
+| C compiler | For building the engine (MSVC or MinGW, see engine.md) |
+| ~4GB disk | Wiki dump + 1.5GB base library + 0.9GB Microsoft weights + code |
 
-## 四步跑通
+## Four steps to a running stack
 
 ```bash
-# 1. 编译引擎
+# 1. Build the engine
 cd engine && build.cmd && cd ..
 
-# 2. 自建知识库 (中文维基预切块 -> ~77.6 万卡 FTS 库)
-#    切块目录内放 wiki_zh_*.jsonl.gz (每行 {"title":..., "text":...}),
-#    不传参默认读 data/wiki/; 也可先跳过此步用少量手头 md/html 走 UI「文档入库」
-python lab/kb/build_wiki_base.py <切块目录>
-# 详见 docs/kb.md
+# 2. Build the knowledge base (Chinese wiki pre-chunks -> ~776k-card FTS library)
+#    Put wiki_zh_*.jsonl.gz (each line {"title":..., "text":...}) in the chunk directory;
+#    defaults to data/wiki/ if no argument; or skip this step and ingest a few
+#    local md/html files via the UI's "Document Ingest"
+python lab/kb/build_wiki_base.py <chunk directory>
+# See docs/kb.md
 
-# 3. 微软 BitNet 权重: 自行下载 gguf (MIT) -> 转 AIM-W + 分词器头
-#    hf.co/microsoft/bitnet-b1.58-2B-4T, 国内可走 hf-mirror.com
-python tools/bitnet2aimw.py <权重.gguf> data/m2b_tern.aimw
-# tokenizer.json 在该 HF 仓库里, 放到 data/bitnet2b/ 后:
+# 3. Microsoft BitNet weights: download the gguf yourself (MIT) -> convert to AIM-W + tokenizer head
+#    hf.co/microsoft/bitnet-b1.58-2B-4T, hf-mirror.com works in China
+python tools/bitnet2aimw.py <weights.gguf> data/m2b_tern.aimw
+# tokenizer.json is in that HF repo; place it under data/bitnet2b/ then:
 python tools/make_bnet_head.py          # -> data/m2b_llama3_head.gguf
-# 详见 docs/weights.md
+# See docs/weights.md
 
-# 4. 起服务
+# 4. Start the server
 python ui/server.py                 # http://127.0.0.1:8600
 ```
 
-浏览器打开 `http://127.0.0.1:8600`。
+Open `http://127.0.0.1:8600` in your browser.
 
-## 验收清单（每项 30 秒）
+## Acceptance checklist (30 seconds each)
 
-| # | 动作 | 预期 |
+| # | Action | Expected |
 |---|---|---|
-| 1 | 对话框输入 `在吗` | 纯对话直答（不查库不联网） |
-| 2 | 输入 `什么是注意力机制` | 路径=知识库引答，回答带来源卡（base 库命中） |
-| 3 | 输入 `帮我搜索一下 firefox` | 路径=联网全文引答：搜索→爬取→过闸→入库→引答（1-3 分钟） |
-| 4 | 输入框旁插件下拉选 `demo.time`，任意输入，点 🔌直调 | 气泡回显 JSON（`cap: demo.time`） |
-| 5 | 侧栏「库存统计」 | base≈77.6万卡 / dyn 库计数 |
+| 1 | Type `在吗` (hello) in the chat box | Direct chat answer (no KB, no web) |
+| 2 | Type `什么是注意力机制` (what is attention) | Path = KB-grounded answer with a source card (base library hit) |
+| 3 | Type `帮我搜索一下 firefox` (search firefox for me) | Path = web-grounded answer: search → crawl → gate → ingest → answer (1-3 minutes) |
+| 4 | Pick `demo.time` from the plugin dropdown, type anything, click 🔌 direct call | Bubble echoes JSON (`cap: demo.time`) |
+| 5 | Sidebar "Store statistics" | base ≈ 776k cards / dyn store counts |
 
-## 配置项
+## Configuration
 
-| 环境变量 | 默认 | 说明 |
+| Env variable | Default | Description |
 |---|---|---|
-| `AIM_WORKERS` | 2（server.py 内置） | 推理引擎线程池工人数量；引擎自校准护栏会在并行不快时自动降级串行 |
-| `AIM_KB_BASE` | `<仓库>/kb_store` | 固定底座库（wiki 成品）路径 |
-| `AIM_KB_DYN_ROOT` | `<仓库>/kb_dyn_store` | 动态库（用户上传+爬虫增量）路径 |
-| `AIM_MODEL_W` | `<仓库>/data/m2b_tern.aimw` | AIM-W 三值权重（步骤 3 的转换产物） |
-| `AIM_MODEL_TOK` | `<仓库>/data/m2b_llama3_head.gguf` | 分词器头 gguf |
-| `AIM_ENGINE_EXE` | `<仓库>/engine/build/aimp_probe.exe` | 引擎可执行文件 |
+| `AIM_WORKERS` | 2 (built into server.py) | Inference engine thread pool workers; the self-calibration guard falls back to serial when parallel isn't faster |
+| `AIM_KB_BASE` | `<repo>/kb_store` | Fixed base library (finished wiki store) path |
+| `AIM_KB_DYN_ROOT` | `<repo>/kb_dyn_store` | Dynamic store (user uploads + crawler increments) path |
+| `AIM_MODEL_W` | `<repo>/data/m2b_tern.aimw` | AIM-W ternary weights (step-3 conversion output) |
+| `AIM_MODEL_TOK` | `<repo>/data/m2b_llama3_head.gguf` | Tokenizer head gguf |
+| `AIM_ENGINE_EXE` | `<repo>/engine/build/aimp_probe.exe` | Engine executable |
 
-> 注：`tools/` 下部分 dbg/test 脚本是开发期调试工具，个别含开发机绝对路径（仅供参考读法，不在快速开始链路上）；快速开始四步链路全部仓库相对路径，clone 即可用。
+> Note: some dbg/test scripts under `tools/` are dev-time debug tools and a few contain dev-machine absolute paths (for reading reference only, not part of the quick-start chain). The four-step quick-start chain uses repo-relative paths throughout — works right after clone.
 
-## 常见问题
+## FAQ
 
-- **8600 被占用**：改 `ui/server.py` 顶部 `PORT`
-- **对话很慢**：本机 CPU 推理 + 联网全链 1-3 分钟属正常；闲聊应该秒级（直答路径）
-- **爬到的页都进不了库**：质量闸 fail-closed 是特性不是 bug，看「网页入库」面板每站的拒绝原因（lowqual:xxx / robots_disallow / fetch_error）
-- **生成速度低**：确认 `AIM_WORKERS=2`；沙箱/云主机里 EcoQoS 节流会让速度掉一个数量级，真机不受影响
+- **Port 8600 occupied**: change `PORT` at the top of `ui/server.py`
+- **Chat is slow**: local CPU inference + the full web chain taking 1-3 minutes is normal; small talk should be near-instant (direct-answer path)
+- **Crawled pages never enter the store**: the fail-closed quality gate is a feature, not a bug — check per-site rejection reasons in the "Web Ingest" panel (lowqual:xxx / robots_disallow / fetch_error)
+- **Low generation speed**: confirm `AIM_WORKERS=2`; EcoQoS throttling in sandboxes/cloud VMs can cost an order of magnitude, real machines are unaffected

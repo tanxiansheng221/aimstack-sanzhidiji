@@ -1,53 +1,53 @@
-# 外置知识库说明书
+# External Knowledge Base Manual
 
-双层库设计：**base 固定底座**（维基成品，77.6 万卡）+ **dyn 动态库**（用户上传 + 爬虫增量，随时可整包更换）。检索时两库并行查、结果合并按分排序。
+Two-layer store design: a **fixed base** (finished wiki store, 776k cards) + a **dynamic store** (user uploads + crawler increments, swappable as a whole at any time). Retrieval queries both stores in parallel and merges results sorted by score.
 
-## 知识库从哪来（自建）
+## Where the knowledge base comes from (self-built)
 
-本仓库**不分发库本体**，管线全开源，两条路：
+This repository **does not distribute the store itself** — the pipeline is fully open-source, with two paths:
 
-**① 从维基 dump 建底座**（推荐起点，约 77.6 万卡）：
+**① Build the base from a Wikipedia dump** (recommended starting point, ~776k cards):
 
 ```bash
-# 下载中文维基 dump (Wikimedia Downloads 或镜像站)
-python lab/kb/build_wiki_base.py <zhwiki-dump.xml.bz2>   # 解析 -> 分块 -> 查重 -> 入库 -> FTS
+# Download the Chinese Wikipedia dump (Wikimedia Downloads or a mirror)
+python lab/kb/build_wiki_base.py <zhwiki-dump.xml.bz2>   # parse -> chunk -> dedup -> ingest -> FTS
 ```
 
-**② 从爬虫增量**：`web.ingest` 插件（见 creeper.md）按主题搜→爬→过闸→入库，底座上叠增量——这是本栈的设计用法，知识库是活的，不是死的快照。
+**② Increments from the crawler**: the `web.ingest` plugin (see creeper.md) searches by topic → crawls → gates → ingests, stacking increments on top of the base — this is the designed usage of this stack: the knowledge base is alive, not a dead snapshot.
 
-无论哪条路，产物都是 `kb_store/cards.jsonl` + `kb_store/kb_fts.db` 两个文件，目录可整包搬移。
+Either way, the output is two files: `kb_store/cards.jsonl` + `kb_store/kb_fts.db`. The directory can be moved as a whole.
 
-## 自建 / 增量
+## Build / increment
 
-| 文件 | 用途 |
+| File | Purpose |
 |---|---|
-| `lab/kb/build_wiki_base.py` | 从维基 dump 构建底座库（大工程，建议直接用成品） |
-| `lab/kb/kb_core.py` | 核心库引擎：卡片追加（O(1)）、SHA-256 内容寻址查重闸 |
-| `lab/kb/fts_index.py` | FTS5 索引封装（增量索引，只插新卡不全库重扫） |
-| `lab/kb/ingest.py` | 富格式解析：txt/md/html/docx/pdf → 纯文本 |
-| `lab/kb/kb_add.py`（插件） | 入库管线：load_any → 分块 → 查重（fail-closed）→ cards.jsonl → FTS |
-| `lab/kb/cli.py` | 命令行直调 |
+| `lab/kb/build_wiki_base.py` | Build the base library from a wiki dump (heavy job; using the finished store is fine) |
+| `lab/kb/kb_core.py` | Core store engine: card append (O(1)), SHA-256 content-addressed dedup gate |
+| `lab/kb/fts_index.py` | FTS5 index wrapper (incremental — only new cards are indexed, no full rescan) |
+| `lab/kb/ingest.py` | Rich-format parsing: txt/md/html/docx/pdf → plain text |
+| `lab/kb/kb_add.py` (plugin) | Ingest pipeline: load_any → chunk → dedup (fail-closed) → cards.jsonl → FTS |
+| `lab/kb/cli.py` | CLI direct call |
 
-入库的规矩：**查重闸只拦重复，质量闸拦低质**（爬虫线的质量五信号在 creeper.md）。占位文件（去注释后 <30 字符）直接跳过。
+House rules: **the dedup gate blocks duplicates; the quality gate blocks low quality** (the crawler's five quality signals are in creeper.md). Placeholder files (<30 chars after comment stripping) are skipped outright.
 
-## 检索
+## Retrieval
 
 ```bash
-# CLI 直调
-aimp_probe x --cap kb.search "线性注意力" 5
+# CLI direct call
+aimp_probe x --cap kb.search "linear attention" 5
 
-# 或经 UI「知识库检索」面板
+# Or via the UI "Knowledge Base Retrieval" panel
 ```
 
-`kb_search.py`（插件）实现 base+dyn 双库混合检索，合并去重按 `score` 降序。每张卡返回 `title/text/source/score/store(base|dyn)`。
+`kb_search.py` (plugin) implements merged retrieval over base+dyn stores, dedup and sort by `score` descending. Each card returns `title/text/source/score/store(base|dyn)`.
 
-## 动态库换装
+## Swapping the dynamic store
 
-`kb_dyn_store/` 整目录是自包含的（卡片 + 索引），换库 = 换目录 + 改 `AIM_KB_DYN_ROOT` 环境变量。这是「知识库外置」设计的核心：底座不动，动态层随时重开。
+The `kb_dyn_store/` directory is self-contained (cards + index); swapping stores = swapping directories + changing the `AIM_KB_DYN_ROOT` environment variable. That is the core of the "externalized knowledge base" design: the base stays, the dynamic layer restarts anytime.
 
-## 注意事项
+## Notes
 
-- cards.jsonl 是追加式 NDJSON，**不要手工编辑**（查重靠 SHA-256 内容寻址，手工改会造成索引与卡片漂移）
-- FTS 索引可随时重建（`purge_base_fts.py` / 重建工具），卡片本体才是真相源
-- 卡片分块策略针对正文页调过：短行壳文在入库前已被质量闸砍掉
-- 77.6 万卡在双核机上全量检索秒级；更大库请自行分区
+- cards.jsonl is append-only NDJSON — **do not hand-edit** (dedup relies on SHA-256 content addressing; manual edits cause index-card drift)
+- The FTS index can be rebuilt anytime (`purge_base_fts.py` / rebuild tools); the cards themselves are the source of truth
+- The card chunking strategy is tuned for prose pages: short-line shell text is cut by the quality gate before ingest
+- 776k cards retrieve in seconds on the dual-core machine; partition larger stores yourself

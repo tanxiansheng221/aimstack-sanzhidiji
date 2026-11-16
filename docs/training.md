@@ -1,68 +1,68 @@
-# 训练资产注意事项
+# Training Assets Manual
 
-训练管线全部公开：无自动微分训练栈、十科课程生成器、语料构建器、以及**正面结果与负面结果一起的完整档案**。这一页是给复现者的避坑清单——每条都有实测战报背书（详见 `lab/docs/`）。
+The training pipeline is fully open: the no-autograd training stack, ten-subject curriculum generators, corpus builders, and the **complete archive of positive and negative results alike**. This page is a pitfall-avoidance list for reproducers — every item is backed by a measured campaign report (see `lab/docs/`).
 
-## 管线地图
+## Pipeline map
 
 ```
 lab/train/
-├── aim_train_real.py        主训练器 (AIM-W 三值 / fp16, 双硬件)
-├── aim_manual.py            手写反传栈 (selftest 29 参数对账 rel 5.7e-7)
-├── build_subject_curriculum.py + curriculum_*_lab.py   十科课程生成
-│                             (模运算/因果/约束/图/逻辑/数学/规划/序列/状态机/代码)
-├── build_lang*_corpus.py    语言/对话/槽位/拒绝语料构建
-├── build_*_mix.py / build_pack_*.py   混合池与打包缓存
-├── peek_lang_corpus.py      ★ 语料验尸 (上卡前必跑)
-└── lab/seeds/               课程种子
+├── aim_train_real.py        main trainer (AIM-W ternary / fp16, dual hardware)
+├── aim_manual.py            hand-written backprop stack (selftest: 29 params, rel 5.7e-7)
+├── build_subject_curriculum.py + curriculum_*_lab.py   ten-subject curriculum generation
+│                             (modular arithmetic / causal / constraint / graph / logic / math / planning / sequences / state machines / code)
+├── build_lang*_corpus.py    language / dialogue / slot / refusal corpus builders
+├── build_*_mix.py / build_pack_*.py   mixture pools and packed caches
+├── peek_lang_corpus.py      ★ corpus autopsy (mandatory before GPU time)
+└── lab/seeds/               curriculum seeds
 ```
 
-## 算力预算（诚实账）
+## Compute budget (honest ledger)
 
-| 规模 | 本机 (2核8G 2018 笔记本) | 免费云容器 |
+| Scale | This machine (2-core 8GB 2018 laptop) | Free cloud container |
 |---|---|---|
-| ≤30M 参数 | 甜点区，一晚 10M | 分钟级冒烟 |
-| 152M 全量 | ~35 天（不现实） | 数小时 |
-| 1.5B | 不要想 | ~80 卡时 |
+| ≤30M params | sweet spot, 10M per night | minutes-level smoke tests |
+| 152M full run | ~35 days (unrealistic) | hours |
+| 1.5B | forget it | ~80 GPU-hours |
 
-训练免费云、推理回本机。本机只跑：对账、冒烟、调试、5-30M 微核。
+Training on free cloud, inference back on the local machine. The local machine only runs: reconciliation, smoke tests, debugging, 5-30M micro-cores.
 
-## 数据三铁律（血账，违反必炸）
+## Three data iron laws (blood-ledger — violations explode)
 
-1. **上卡前必跑语料验尸**（`peek_lang_corpus.py`）：统计汉字/ASCII 字节占比与语种分布。事故实锤：六语种混合共情语料汉字字节只占 5%，152M 啃不动熵，loss 卡 2.0 平台四万步不开窍，输出俄语（语料里真有俄语回复）。
-2. **语言先行**：语言预训练 → 流利度验收 → 再进任务训练。小模型禁止直接混训（用户拍板写入研究日志的铁律）。
-3. **回放比例**：强偏移语料取 20-30% 回放，不足 = 灾难性遗忘实锤（lang4 槽位被回炉冲光）。
+1. **Run the corpus autopsy before any training** (`peek_lang_corpus.py`): CJK/ASCII byte ratios and language distribution. Real incident: a six-language mixed empathy corpus had only 5% CJK bytes; a 152M model couldn't chew the entropy, loss stuck at the 2.0 plateau for 40k steps without opening up, and output was Russian (the corpus genuinely contained Russian replies).
+2. **Language first**: language pretraining → fluency acceptance → then task training. Small models must not mix-train directly (iron law written into the research logs).
+3. **Replay ratio**: strongly offset corpora take 20-30% replay; less = catastrophic forgetting (the lang4 slot capability was wiped by a reheat).
 
-## 训练器已知坑（四条，全有战报）
+## Known trainer pitfalls (four, all with campaign reports)
 
-1. **resume 疑似丢 AdamW m/v 状态**——续训开头 loss 尖峰，评估时留意前几百步
-2. **bf16 loss 随机永久发散**——熔断阈值要放宽；根治 = fp32 loss + logits clamp（`test_bf16adam.py`）
-3. **eval 必须 no_grad**——8 层 checkpoint 的图能吃满 47GB 内存 OOM
-4. **stdout 双包 TextIOWrapper 打架**——I/O closed 错误；Windows 下输出统一 `sys.stdout.reconfigure(encoding="utf-8")`
+1. **resume appears to lose AdamW m/v state** — loss spikes at continuation start; watch the first few hundred steps when evaluating
+2. **bf16 loss randomly diverges permanently** — widen the fuse threshold; root fix = fp32 loss + logits clamp (`test_bf16adam.py`)
+3. **eval must run under no_grad** — an 8-layer checkpoint's graph can eat 47GB and OOM
+4. **double TextIOWrapper on stdout fight** — "I/O closed" errors; on Windows unify output with `sys.stdout.reconfigure(encoding="utf-8")`
 
-## 收割纪律
+## Harvest discipline
 
-- checkpoint 先 cp 到持久盘（NFS/对象存储）再续训——容器盘关机安全但**释放即失**
-- MD5 双端验毕才算收割完成
-- 不用即关机；收割后立即面板关机（SSH poweroff 不确定停计费）
+- cp checkpoints to persistent storage (NFS/object storage) before continuing training — container disks are safe across shutdowns but **released = gone**
+- Harvest is complete only after MD5 verification on both ends
+- Shut down when idle; stop billing via the panel immediately after harvest (SSH poweroff does not reliably stop billing)
 
-## 存储坑
+## Storage pitfalls
 
-- 持久盘塞满会让 SFTP 报神秘 `OSError: Failure`，先查容量再怀疑网络
-- 缓存/数据包走 /root overlay（大且快，但**不持久化**），只有 checkpoint 进持久盘
+- A full persistent disk makes SFTP fail with a mysterious `OSError: Failure` — check capacity before suspecting the network
+- Caches/data packs go to /root overlay (large and fast but **non-persistent**); only checkpoints go to persistent storage
 
-## 负面结果档案（本仓库最值钱的部分）
+## Negative-results archive (the most valuable part of this repo)
 
-`lab/docs/E6_CAMPAIGN_AND_RECIPE_DOSSIER.md`：
+`lab/docs/E6_CAMPAIGN_AND_RECIPE_DOSSIER.md`:
 
-- 十臂算术对照**全部零真实泛化**：验证式背题、链式、13 万题零重复流全失败
-- 假阳性自首：某臂 0.232 的"成绩"=「永远答 0」的先验——**算术类评测必须先算答案先验再报数**
-- cosine 谷底续训三配方全负收益；文献三轮检索配方档案（傅里叶特征/Abacus 三件套/FFN 限制）
-- 规模欠账实锤：152M 仅 13:1 tokens/param，现代小模型 100-60000:1
+- Ten-arm arithmetic comparison: **all zero real generalization** — verification-style memorization, chained, and 130k-problem zero-repeat streams all failed
+- False-positive confession: one arm's "0.232 score" was an "always answer 0" prior — **arithmetic evaluations must compute the answer prior before reporting numbers**
+- Three continuation recipes from the cosine trough: all negative returns; three literature-search recipe dossiers (Fourier features / Abacus trio / FFN limitations)
+- Scale debt confirmed: 152M at only 13:1 tokens/param vs 100-60000:1 for modern small models
 
-## 验收五条（复现完成标准）
+## Five acceptance criteria (definition of reproduction complete)
 
-1. C / NumPy 逐位对账（rel < 1e-6）
-2. 双架构编译
-3. 依赖审计 grep（产物零第三方运行时）
-4. 端侧指标达标
-5. 自有语料
+1. C / NumPy bit-exact reconciliation (rel < 1e-6)
+2. Dual-architecture compilation
+3. Dependency audit grep (zero third-party runtime in artifacts)
+4. Edge-side metrics met
+5. Self-owned corpus

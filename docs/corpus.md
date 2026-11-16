@@ -1,56 +1,56 @@
-# 语料构建器说明书
+# Corpus Builder Manual
 
-所有语料**生成器**开源、可复现；数据集本体不入库（各自有上游许可，见 NOTICE.md），用脚本从官方渠道拉取。
+All corpus **generators** are open-source and reproducible; the datasets themselves are not committed (each has upstream licensing, see NOTICE.md) — scripts pull from official channels.
 
-## 课程类（十科，确定性生成器）
+## Curriculum-type (ten subjects, deterministic generators)
 
-| 生成器 | 科目 |
+| Generator | Subject |
 |---|---|
-| `curriculum_math_lab.py` | 数学 |
-| `curriculum_mod_arith`(在 math 内) | 模运算 |
-| `curriculum_causal_lab.py` | 因果 |
-| `curriculum_csp_lab.py` | 约束满足 |
-| `curriculum_fsm_lab.py` | 状态机 |
-| `curriculum_graph_lab.py` | 图 |
-| `curriculum_logic_lab.py` | 逻辑 |
-| `curriculum_plan_lab.py` | 规划 |
-| `curriculum_progexec_lab.py` | 代码执行 |
-| `curriculum_seqind_lab.py` | 序列归纳 |
+| `curriculum_math_lab.py` | Math |
+| `curriculum_mod_arith` (inside math) | Modular arithmetic |
+| `curriculum_causal_lab.py` | Causal |
+| `curriculum_csp_lab.py` | Constraint satisfaction |
+| `curriculum_fsm_lab.py` | State machines |
+| `curriculum_graph_lab.py` | Graph |
+| `curriculum_logic_lab.py` | Logic |
+| `curriculum_plan_lab.py` | Planning |
+| `curriculum_progexec_lab.py` | Code execution |
+| `curriculum_seqind_lab.py` | Sequence induction |
 
-全套走「题面自包含 + 定向毒必翻 + 生成器内嵌通道 B 复核 + 退化 cap + 多通道对账」五条入场纪律——生成即验证，题题带标准答案与可复核链路。
+The full set follows five admission disciplines: "self-contained problem statements + targeted poisons must be caught + generator-embedded channel-B cross-check + degeneracy cap + multi-channel reconciliation" — generation is verification; every problem ships with a standard answer and an auditable chain.
 
-打包：`build_subject_curriculum.py` 汇总成训练包；`build_segment_caches.py` 分科缓存。
+Packing: `build_subject_curriculum.py` aggregates into training packs; `build_segment_caches.py` builds per-subject caches.
 
-## 语言/对话类
+## Language / dialogue-type
 
-| 脚本 | 产物 | 上游 |
+| Script | Output | Upstream |
 |---|---|---|
-| `build_lang1_corpus.py` + `compress_lang1.py` | 语言打底 | 维基 + LCCC（`convert_lccc.py`） |
-| `build_lang3b_corpus.py` / `build_lang3c_corpus.py` | 中文对白 | CPED（arXiv:2205.14727） |
-| `build_lang4_slot.py` | 槽位计算 `[C:算式]=结果` | 自产（Calc-X 式，全求值验证） |
-| `build_lang5_refusal.py` / `build_lang5_pack.py` | 中文拒绝语料（五类：暴/黄/隐私/违法/核心资产） | 自产合成 |
-| `fetch_cped.py` / `fetch_esconv.py`（tools 遗产） | 上游拉取 | ESConv（thu-coai） |
+| `build_lang1_corpus.py` + `compress_lang1.py` | language base | Wikipedia + LCCC (`convert_lccc.py`) |
+| `build_lang3b_corpus.py` / `build_lang3c_corpus.py` | Chinese dialogue | CPED (arXiv:2205.14727) |
+| `build_lang4_slot.py` | slot arithmetic `[C:expr]=result` | self-produced (Calc-X style, fully evaluation-verified) |
+| `build_lang5_refusal.py` / `build_lang5_pack.py` | Chinese refusal corpus (five categories: violence / porn / privacy / illegal / core assets) | self-produced synthesis |
+| `fetch_cped.py` / `fetch_esconv.py` (tools legacy) | upstream fetch | ESConv (thu-coai) |
 
-## 混合池类
+## Mixture pools
 
-`build_v1_mix.py` / `build_804m_*.py` / `build_1p5b_*.py` / `build_pack_*.py` / `build_spec_pool.py` / `build_fmt*_corpus.py`（`fmt2_generators.py`/`fmt5_generators.py`）：多源按比例混合 + 打包缓存（npz）。配方细节与各版本差异见 `lab/docs/CORPUS_PLAN_LANG7.md`。
+`build_v1_mix.py` / `build_804m_*.py` / `build_1p5b_*.py` / `build_pack_*.py` / `build_spec_pool.py` / `build_fmt*_corpus.py` (`fmt2_generators.py`/`fmt5_generators.py`): multi-source proportional mixing + packed caches (npz). Recipe details and per-version differences in `lab/docs/CORPUS_PLAN_LANG7.md`.
 
-## 语料验尸（上卡前必跑）
+## Corpus autopsy (mandatory before training)
 
 ```bash
-python lab/train/peek_lang_corpus.py <语料文件或目录>
+python lab/train/peek_lang_corpus.py <corpus file or directory>
 ```
 
-输出：汉字字节占比 / ASCII 占比 / 语种计数 / 窗口统计。**铁律**：小模型喂单语种，多语种留档不给小模型（事故记录见 training.md）。
+Output: CJK byte ratio / ASCII ratio / language counts / window statistics. **Iron law**: small models get monolingual corpora; multilingual corpora are archived, never fed to small models (incident record in training.md).
 
-## 上游协议速查
+## Upstream license quick reference
 
-| 数据集 | 许可要点 |
+| Dataset | License essentials |
 |---|---|
-| 维基 dump | CC-BY-SA（署名+相同方式共享） |
-| CPED | 学术用途，见原仓库 |
-| ESConv | 原仓库许可 |
-| ROCStories / Opus-WritingPrompts | 原发布渠道条款 |
-| prosocial-dialog | Apache-2.0（原仓库） |
+| Wikipedia dump | CC-BY-SA (attribution + share-alike) |
+| CPED | academic use, see original repo |
+| ESConv | original repo license |
+| ROCStories / Opus-WritingPrompts | original distribution channel terms |
+| prosocial-dialog | Apache-2.0 (original repo) |
 
-凡上游协议不明确的，宁可跳过（有「诚实跳过」记录：OASST2 schema 不匹配、部分镜像 401——不硬闯）。
+When upstream licensing is unclear, skip rather than risk it (there are "honest skips" on record: OASST2 schema mismatch, some mirrors 401 — no brute-forcing).

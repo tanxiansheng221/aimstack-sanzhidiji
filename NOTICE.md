@@ -1,38 +1,38 @@
-# NOTICE / 第三方内容归属
+# NOTICE / Third-party content attribution
 
-本仓库包含或引用的第三方内容，按来源列明：
+Third-party content contained in or referenced by this repository, listed by source:
 
-## 1. Microsoft BitNet 权重（MIT，不分发，自行下载转换）
+## 1. Microsoft BitNet weights (MIT, not distributed — download and convert yourself)
 
-- 模型：[microsoft/bitnet-b1.58-2B-4T](https://huggingface.co/microsoft/bitnet-b1.58-2B-4T)
-- 版权：© Microsoft Corporation，**MIT 许可**
-- 本仓库关系：仅提供 AIM-W（`.aimw`）打包格式的**转换工具**（`tools/bitnet2aimw.py`、`tools/gguf2aimw.py`）与推理内核实现。权重本体请从微软官方渠道下载（国内可走 hf-mirror.com 镜像），本仓库不分发、不修改权重数值。
-- "BitNet" "b1.58" 为 Microsoft 的研究成果名称，本文档中的引用仅为技术描述需要。
+- Model: [microsoft/bitnet-b1.58-2B-4T](https://huggingface.co/microsoft/bitnet-b1.58-2B-4T)
+- Copyright: © Microsoft Corporation, **MIT license**
+- Relationship to this repo: this repo only provides the **conversion tools** for the AIM-W (`.aimw`) packing format (`tools/bitnet2aimw.py`, `tools/gguf2aimw.py`) and the inference kernel implementation. Download the weights from Microsoft's official channel (hf-mirror.com works in China); this repo does not distribute or modify the weight values.
+- "BitNet" and "b1.58" are names of Microsoft's research; references in this document are for technical description only.
 
-## 2. 中文维基百科内容（自建库，源自 dump）
+## 2. Chinese Wikipedia content (self-built store, from dumps)
 
-- 内容来源：中文维基百科 dump（Wikimedia Downloads / 镜像）
-- 许可：**CC-BY-SA 3.0 / 4.0**（维基百科文本许可）
-- 署名义务：自建库再分发时，需同以 CC-BY-SA 许可、保留署名与原文链接（本管线在每张卡 `source` 字段保留原文链接可溯源）。本仓库不分发库本体，由使用者按上述条款自建。
+- Source: Chinese Wikipedia dump (Wikimedia Downloads / mirrors)
+- License: **CC-BY-SA 3.0 / 4.0** (Wikipedia text license)
+- Attribution obligation: redistributing the self-built store requires the same CC-BY-SA license, preserved attribution, and links to the original text (the pipeline keeps the original link in each card's `source` field for traceability). This repo does not distribute the store itself; users build it under the terms above.
 
-## 3. 语料上游数据集（通过脚本获取，不入库再分发）
+## 3. Corpus upstream datasets (fetched via scripts, not redistributed)
 
-以下数据集由 `lab/train/` 中的获取脚本从官方渠道拉取，本仓库不重新分发其内容，使用前请遵守各自许可：
+The following datasets are pulled from official channels by fetch scripts in `lab/train/`; this repo does not redistribute their contents — comply with each license before use:
 
-| 数据集 | 来源 | 用途 |
+| Dataset | Source | Use |
 |---|---|---|
-| CPED | scut-bds/CPED (arXiv:2205.14727) | 中文多轮对白 |
-| ESConv | thu-coai/Emotional-Support-Conversation | 情绪支持对话 |
-| PsyQA | 志愿者公开数据 | 中文心理问答 |
-| ROCStories / Opus-WritingPrompts | 官方发布 | 创意写作 |
-| prosocial-dialog | allenai | 谨慎回应/干预语料 |
-| LCCC | thu-coai | 中文对话打底 |
-| 中文维基 dump | Wikimedia Downloads | 知识库打底 |
+| CPED | scut-bds/CPED (arXiv:2205.14727) | Chinese multi-turn dialogue |
+| ESConv | thu-coai/Emotional-Support-Conversation | emotional support dialogue |
+| PsyQA | volunteer public data | Chinese psychological QA |
+| ROCStories / Opus-WritingPrompts | official releases | creative writing |
+| prosocial-dialog | allenai | cautious response / intervention corpus |
+| LCCC | thu-coai | Chinese dialogue base |
+| Chinese Wikipedia dump | Wikimedia Downloads | knowledge base base |
 
-## 4. 推理内核参考
+## 4. Inference kernel reference
 
-三值推理内核的实现参考了 BitNet b1.58 论文（Frostig et al., Microsoft Research）公开描述的 1.58-bit 三值权重计算方法，代码为独立实现，无 Microsoft 代码复制。
+The ternary inference kernel's implementation references the 1.58-bit ternary weight computation method as publicly described in the BitNet b1.58 paper (Frostig et al., Microsoft Research). The code is an independent implementation with no Microsoft code copied.
 
-## 5. 渲染级联
+## 5. Render cascade
 
-Edge 渲染使用系统自带 Microsoft Edge 浏览器（Playwright `channel=msedge`），不随仓库分发任何浏览器二进制。
+Edge rendering uses the system-installed Microsoft Edge browser (Playwright `channel=msedge`); no browser binaries are distributed with this repo.

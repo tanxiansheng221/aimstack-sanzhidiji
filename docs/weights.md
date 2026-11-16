@@ -1,51 +1,51 @@
-# 微软权重转换说明书
+# Microsoft Weight Conversion Manual
 
-**归属声明（先读）**：BitNet b1.58 2B 权重 © Microsoft Corporation（MIT）。本仓库只提供 AIM-W 打包格式的**转换层**与推理内核，不训练、不修改、不随仓库分发权重本体。
+**Attribution notice (read first)**: BitNet b1.58 2B weights © Microsoft Corporation (MIT). This repository only provides the **conversion layer** for the AIM-W packing format and the inference kernel — it does not train, modify, or distribute the weights themselves.
 
-## 拿到权重
+## Getting the weights
 
-1. 从官方渠道下载：`huggingface.co/microsoft/bitnet-b1.58-2B-4T`（MIT，选 GGUF 格式）
-2. 校验文件完整性
+1. Download from the official channel: `huggingface.co/microsoft/bitnet-b1.58-2B-4T` (MIT, GGUF format)
+2. Verify file integrity
 
-## 转换成 AIM-W
+## Converting to AIM-W
 
 ```bash
-# 主转换器 (bitnet gguf -> .aimw 三值 2-bit 打包)
-python tools/bitnet2aimw.py <下载的权重.gguf> data/m2b_tern.aimw
+# Main converter (bitnet gguf -> .aimw ternary 2-bit packing)
+python tools/bitnet2aimw.py <downloaded.gguf> data/m2b_tern.aimw
 
-# 通用 gguf 转换 (fp 权重或 q4k 等)
+# Generic gguf conversion (fp weights, q4k, etc.)
 python tools/gguf2aimw.py <in.gguf> <out.aimw>
-python tools/gguf2aimw_v2.py <in.gguf> <out.aimw>     # v2 格式
+python tools/gguf2aimw_v2.py <in.gguf> <out.aimw>     # v2 format
 
-# 转换后校验
+# Post-conversion validation
 python tools/validate_aimw.py data/m2b_tern.aimw
-python tools/peek_aimw_full.py data/m2b_tern.aimw     # 结构预览
+python tools/peek_aimw_full.py data/m2b_tern.aimw     # structure preview
 ```
 
-转换产物 ~0.87GB（2-bit 三值打包的收益：原 gguf 的 1/4-1/2 体积）。
+Conversion output is ~0.87GB (the payoff of 2-bit ternary packing: 1/4 to 1/2 of the original gguf size).
 
-## 对账工具（换权重后建议跑）
+## Reconciliation tools (recommended after any weight swap)
 
-| 工具 | 用途 |
+| Tool | Purpose |
 |---|---|
-| `tools/bnet_oracle.py` | NumPy 侧 oracle 实现，与 C 引擎输出逐位对账 |
-| `tools/make_bnet_head.py` / `make_mini_bitnet.py` | 小测试权重构造（秒级冒烟，不用 2B 大权重） |
-| `tools/check_tok.py` / `test_tokrt.py` | 分词器对账 |
+| `tools/bnet_oracle.py` | NumPy-side oracle implementation, reconciled bit-by-bit against the C engine |
+| `tools/make_bnet_head.py` / `make_mini_bitnet.py` | Tiny test-weight construction (second-level smoke tests, no 2B weights needed) |
+| `tools/check_tok.py` / `test_tokrt.py` | Tokenizer reconciliation |
 
-对账纪律：**任何内核改动必须 C/NumPy 逐位对账过绿再谈速度**（引擎说明书里的 41 倍优化就是在对账契约保持的前提下做的）。
+Reconciliation discipline: **any kernel change must pass the C/NumPy bit-exact reconciliation before speed is even discussed** (the 41× optimization in the engine manual was done entirely under that contract).
 
-## AIM-W 格式
+## AIM-W format
 
-- 定义与读写实现在 `engine/aimw.c/.h`
-- 三值权重 {-1,0,+1} 打包进 2-bit，per-block scale
-- 头部含架构/层数/维度元信息，`peek_aimw_full.py` 可打印
+- Definition and read/write implementation in `engine/aimw.c/.h`
+- Ternary weights {-1,0,+1} packed into 2 bits, per-block scale
+- Header carries architecture/layer/dimension metadata; `peek_aimw_full.py` can print it
 
-## 自研模型权重说明
+## Self-trained model weights
 
-自研 152M / 微核等模型**不在本仓库发布**。`lab/train/` 提供了完整训练管线，你可以用十科课程生成器（`lab/train/curriculum_*_lab.py`，模运算/因果/约束/图/逻辑/数学/规划/序列/状态机/代码十科）+ 语料构建器自己从零训一个小模型——这正是本仓库「训练资产全公开」的部分。
+Self-trained 152M / micro-core models are **not distributed in this repository**. `lab/train/` provides the complete training pipeline — you can train a small model from scratch with the ten-subject curriculum generators (`lab/train/curriculum_*_lab.py`: modular arithmetic / causal / constraint / graph / logic / math / planning / sequences / state machines / code) plus the corpus builders. That is exactly the "training assets fully open" part of this repo.
 
-## 常见问题
+## FAQ
 
-- **转换报 shape 不符**：确认下载的是 b1.58 2B 的 gguf 且未被量化工具二次修改
-- **推理乱码**：先跑 `tools/check_tok.py` 排除分词器对账问题，再查 gguf→aimw 转换日志
-- **速度不对**：确认 `AIM_WORKERS=2` 与自校准输出（`AIM_PAR_DBG=1`）；沙箱环境 EcoQoS 会拖慢一个数量级
+- **Shape mismatch during conversion**: confirm you downloaded the b1.58 2B gguf and it wasn't re-quantized by another tool
+- **Garbled inference output**: run `tools/check_tok.py` first to rule out tokenizer reconciliation issues, then check the gguf→aimw conversion log
+- **Wrong speed**: confirm `AIM_WORKERS=2` and check self-calibration output (`AIM_PAR_DBG=1`); EcoQoS in sandboxed environments costs an order of magnitude

@@ -2,138 +2,133 @@
 
 > Fully self-built local AI stack — from scratch: ternary C inference engine (zero third-party runtime), plugin bus, multi-engine web crawler with quality gates, FTS knowledge base, and the complete training pipeline + research logs.
 
-**中文：一个从零开始的全自研本地 AI 栈。** 没有框架、没有 PyTorch 依赖（训练对账用完即弃，产物零外部运行时）、没有现成引擎——C 推理核、插件总线、爬虫、知识库、训练器，每一层都是手写的。开发机是一台 2018 年买的双核笔记本，至今没换。
+No frameworks, no PyTorch dependency (used only for reconciliation during development, zero external runtime in the product), no off-the-shelf engine — the C inference core, plugin bus, crawler, knowledge base, and trainer are all hand-written. The dev machine is a dual-core laptop bought in 2018, never replaced.
 
-🎬 **UI 全链演示 (6:59，在线播放)** —— 对话直答 / 知识库引答 / 联网搜索-爬取-入库-引答 / 插件总线直调，全程 2018 年双核笔记本实机录屏：
-
-
+🎬 **Full-chain UI demo (6:59, online)** — direct chat answers / KB-grounded answers / web search-crawl-ingest-answer / direct plugin calls, all screen-recorded on the 2018 dual-core laptop:
 
 https://github.com/user-attachments/assets/d4f897d0-001c-4dc6-b773-324c69b16a02
 
-
 ```
-你说话
+you speak
   │
   ▼
-UI (server.py, 纯 stdlib)          ← 本地 127.0.0.1:8600
+UI (server.py, pure stdlib)        ← local 127.0.0.1:8600
   │
   ▼
-C 引擎 (engine/, 纯 C, 零第三方运行时)
-  ├─ 三值推理核 (BitNet b1.58 式 2-bit 打包 + SIMD 快路径)
-  ├─ 分词器 (自研: 字节级 + BPE；第三方权重请用配套的微软官方分词器, 见下)
-  └─ 插件总线 (约百行 C: caps.json 注册表 → 拉起 Python 插件 → JSON 信封)
+C engine (engine/, pure C, zero third-party runtime)
+  ├─ ternary inference core (BitNet b1.58-style 2-bit packing + SIMD fast path)
+  ├─ tokenizer (self-built: byte-level + BPE; third-party weights ship with the official Microsoft tokenizer, see below)
+  └─ plugin bus (~100 lines of C: caps.json registry → spawns Python plugins → JSON envelopes)
         │
         ▼
-Python 插件 (纯 stdlib)
-  ├─ kb.search / kb.add     ← 外置知识库 (FTS+向量混合检索, 查重闸)
-  ├─ web.search / web.ingest← 多引擎搜索 (bing/百度/360 并行 + Edge 渲染级联 + 质量五信号闸)
-  └─ demo.time              ← 最小冒烟插件
+Python plugins (pure stdlib)
+  ├─ kb.search / kb.add     ← external knowledge base (FTS retrieval, dedup gate)
+  ├─ web.search / web.ingest← multi-engine search (bing/Baidu/360 in parallel + Edge render cascade + quality gates)
+  └─ demo.time              ← minimal smoke-test plugin
 ```
 
-模型不感知插件的存在：路由（确定性代码）决定调什么插件，插件把料喂给模型，模型只负责读料写答案。**模型 = 读者，插件 = 图书馆员。**
+The model is unaware of the plugins: routing (deterministic code) decides what to call, plugins feed material to the model, and the model only reads and writes answers. **Model = reader, plugins = librarians.**
 
-## 快速开始
+## Quick start
 
 ```bash
 git clone https://github.com/tanxiansheng221/aimstack-sanzhidiji.git
 cd aimstack-sanzhidiji
 
-# 1. 编译引擎 (Windows, 双架构见 docs/engine.md)
+# 1. Build the engine (Windows, dual-architecture see docs/engine.md)
 cd engine && build.cmd && cd ..
 
-# 2. 自建知识库 (中文维基预切块 -> FTS 库, 见 docs/kb.md)
-python lab/kb/build_wiki_base.py <切块目录>
+# 2. Build the knowledge base (Chinese wiki pre-chunks -> FTS store, see docs/kb.md)
+python lab/kb/build_wiki_base.py <chunk directory>
 
-# 3. 微软 BitNet 权重: 自行下载 gguf (hf.co/microsoft/bitnet-b1.58-2B-4T, MIT,
-#    国内可走 hf-mirror.com) -> 转换为 AIM-W + 分词器头, 见 docs/weights.md
-python tools/bitnet2aimw.py <权重.gguf> data/m2b_tern.aimw
+# 3. Microsoft BitNet weights: download the gguf yourself (MIT;
+#    hf-mirror.com works in China) -> convert to AIM-W + tokenizer head, see docs/weights.md
+python tools/bitnet2aimw.py <weights.gguf> data/m2b_tern.aimw
 python tools/make_bnet_head.py
 
-# 4. 起服务
+# 4. Start the server
 python ui/server.py        # http://127.0.0.1:8600
 ```
 
-详细说明：[docs/quickstart.md](docs/quickstart.md)
+Details: [docs/quickstart.md](docs/quickstart.md)
 
-> **分词器怎么选（重要）**
-> - 跑**第三方权重**（如微软 BitNet b1.58-2B-4T）时，请使用配套的**微软官方分词器**：`tools/llama3_tok.py`。它是 Llama-3 BPE 的纯 stdlib 实现，读取微软官方 `tokenizer.json`（从 hf.co/microsoft/bitnet-b1.58-2B-4T 下载，国内走 hf-mirror.com，放到 `data/bitnet2b/tokenizer.json`），编码/解码与官方输出对齐。
-> - 引擎内置的**自研 C 分词器**（`engine/tokenizer.c`，字节级 + BPE）目前只在有限样本上与参考实现做过逐 token 对账（`tools/check_tok.py`），**尚未完成全量验证**。跑第三方权重请以官方分词器为准；自研分词器主要用于自研模型（152M 等）的实验闭环。
+> **Which tokenizer to use (important)**
+> - For **third-party weights** (e.g., Microsoft BitNet b1.58-2B-4T), use the **official Microsoft tokenizer**: `tools/llama3_tok.py`. It is a pure-stdlib Llama-3 BPE implementation reading the official `tokenizer.json` (download from hf.co/microsoft/bitnet-b1.58-2B-4T, hf-mirror.com works in China, place at `data/bitnet2b/tokenizer.json`); encoding/decoding aligns with the official output.
+> - The engine's built-in **self-built C tokenizer** (`engine/tokenizer.c`, byte-level + BPE) has only been reconciled token-by-token against a reference on a limited sample set (`tools/check_tok.py`) and is **not fully verified yet**. For third-party weights, the official tokenizer is authoritative; the self-built tokenizer serves the experiment loop for self-trained models (152M etc.).
 
-## 目录
+## Directory
 
-| 目录 | 内容 | 说明书 |
+| Directory | Contents | Manual |
 |---|---|---|
-| `engine/` | C 推理引擎 + 三值核 + 分词器 + 插件总线 | [中文](docs/engine.md) · [EN](docs/engine.en.md) |
-| `plugins/` | 5 个 Python 插件 + caps.json 注册表 | [中文](docs/bus.md) · [EN](docs/bus.en.md) |
-| `ui/` | 本地 Web UI | [中文](docs/quickstart.md) · [EN](docs/quickstart.en.md) |
-| `lab/creeper/` | 多引擎搜索 + 渲染级联 + 质量闸 | [中文](docs/creeper.md) · [EN](docs/creeper.en.md) |
-| `lab/kb/` | 知识库引擎 (FTS 索引/查重闸/入库) | [中文](docs/kb.md) · [EN](docs/kb.en.md) |
-| `lab/train/` | 完整训练管线 (无自动微分训练栈 + 十科课程生成器 + 语料构建器) | [中文](docs/training.md) · [EN](docs/training.en.md) · [corpus](docs/corpus.md)/[EN](docs/corpus.en.md) |
-| `lab/seeds/` | 实验种子 (op18 双种子 / cot_mech 复现) | [docs/training.md](docs/training.md) |
-| `lab/results/` | 实验结果 JSON (物证) | — |
-| `lab/docs/` | 117 章 CPU 原生推演全记录 + E6 负面结果档案 | 先看这个再改代码 |
-| `tools/` | 探针/基准测试脚本 | — |
+| `engine/` | C inference engine + ternary core + tokenizer + plugin bus | [docs/engine.md](docs/engine.md) |
+| `plugins/` | 5 Python plugins + caps.json registry | [docs/bus.md](docs/bus.md) |
+| `ui/` | Local web UI | [docs/quickstart.md](docs/quickstart.md) |
+| `lab/creeper/` | Multi-engine search + render cascade + quality gates | [docs/creeper.md](docs/creeper.md) |
+| `lab/kb/` | Knowledge base engine (FTS index / dedup gate / ingest) | [docs/kb.md](docs/kb.md) |
+| `lab/train/` | Complete training pipeline (no-autograd stack + ten-subject curriculum generators + corpus builders) | [docs/training.md](docs/training.md) · [corpus](docs/corpus.md) |
+| `lab/seeds/` | Experiment seeds (op18 dual-seed / cot_mech replication) | [docs/training.md](docs/training.md) |
+| `lab/results/` | Experiment result JSONs (evidence) | — |
+| `lab/docs/` | 117-chapter CPU-native research log + E6 negative-results dossier | Read this before touching the code |
+| `tools/` | Probes / benchmark scripts | — |
 
-> All manuals above have English versions (`*.en.md`) — 中文版与英文版内容同源同步。
+## Hardware statement: a 2018 laptop holds the floor
 
-## 硬件宣言：2018 年的笔记本兜住了下限
+The dev machine for the entire stack is a **Dell laptop bought in 2018**, never replaced (as of 2026):
 
-整个栈的开发机是一台 **2018 年买的戴尔笔记本**，至今（2026）没换过：
-
-| 部件 | 规格 |
+| Part | Spec |
 |---|---|
-| CPU | Intel Core i7-7500U @ 2.70GHz（**2 核 4 线程**，低压 U） |
-| 内存 | 8GB DDR4-2133 单通道 |
-| GPU | GeForce 940MX（太弱，弃用——整套栈纯 CPU，不碰显卡） |
-| 硬盘 | 512GB SSD + 1TB HDD |
+| CPU | Intel Core i7-7500U @ 2.70GHz (**2 cores / 4 threads**, low-power U) |
+| RAM | 8GB DDR4-2133 single channel |
+| GPU | GeForce 940MX (too weak, unused — the whole stack is pure CPU, no CUDA) |
+| Storage | 512GB SSD + 1TB HDD |
 
-这台机器实测兜住的数字：
+Numbers this machine actually held:
 
-- 三值核 SIMD 快路径：**85.53 tok/s**（从 2.08 优化 41 倍，C/NumPy 逐位对账保持绿）
-- BitNet b1.58 2B（AIM-W 0.87GB）：**3.20 tok/s** 双工人（串行 1.99，引擎内自校准护栏）
-- 本地训练甜点区（本机实测）：**2 核 8GB 下 5M-30M 参数**；152M 全量本机约 35 天——甜点区随 CPU/内存水涨船高，核数和内存翻倍模型就更大；训练上免费云容器，栈本身不设硬件门槛
+- Ternary-core SIMD fast path: **85.53 tok/s** (optimized 41× from 2.08, C/NumPy bit-exact reconciliation kept green)
+- BitNet b1.58 2B (AIM-W 0.87GB): **3.20 tok/s** dual-worker (serial 1.99, in-engine self-calibration guard)
+- Local training sweet spot (this machine measured): **5M-30M params on 2 cores / 8GB**; a 152M full run would take ~35 days locally — the sweet spot scales with CPU and RAM (double the cores and memory and the model grows with it); training goes to free cloud containers, the stack itself sets no hardware floor
 
-**下限是我兜住了，上限需要大家来测**——这套栈没写一行硬件特定代码，多核、AVX-512、大内存的表现我们没有机会验证，欢迎真机数据。
+**The floor is held by this machine; the ceiling is yours to test** — the stack contains zero hardware-specific code. Multi-core, AVX-512, and large-memory machines are welcome to report real numbers.
 
-## 训练资产（全部公开）
+## Training assets (fully open)
 
-- 无自动微分训练栈（手写反传，selftest 29 参数对账 rel 5.7e-7）
-- 十科课程生成器 + 语料构建器全套（模运算/因果/约束/图/逻辑/数学/规划/序列/状态机/代码）
-- 语料验尸纪律、回放比例、三配方负结果、四臂算术对照零泛化的完整档案
-- 详见 [docs/training.md](docs/training.md) 与 [lab/docs/](lab/docs/)
+- No-autograd training stack (hand-written backprop, 29-parameter selftest reconciliation, rel 5.7e-7)
+- Ten-subject curriculum generators + corpus builder suite (modular arithmetic / causal / constraint / graph / logic / math / planning / sequences / state machines / code)
+- Full archive: corpus-autopsy discipline, replay ratios, three negative-return continuation recipes, four-arm arithmetic comparison with zero generalization
+- See [docs/training.md](docs/training.md) and [lab/docs/](lab/docs/)
 
-**正面结果和负面结果一起发**——负面结果档案（E6_CAMPAIGN_AND_RECIPE_DOSSIER）可能是这个仓库里最值钱的部分。
+**Positive and negative results ship together** — the negative-results dossier (E6_CAMPAIGN_AND_RECIPE_DOSSIER) may be the most valuable part of this repo.
 
-## 权重归属声明（必读）
+## Weight attribution notice (must read)
 
-- **BitNet b1.58 2B 权重 © Microsoft Corporation，MIT 许可**。本仓库的 AIM-W 格式（`.aimw`）只是该权重的**转换层/打包格式**，不是我们训练的模型。转换工具在 `tools/bitnet2aimw.py`，权重本体请从微软官方渠道（或 hf-mirror.com 镜像）下载。
-- 自研模型（152M 等）的权重**不在本仓库发布**，本仓库只发布训练它的完整管线。
-- 知识库自建自中文维基 dump，**CC-BY-SA**，署名维基百科贡献者。见 [NOTICE.md](NOTICE.md)。
+- **BitNet b1.58 2B weights © Microsoft Corporation, MIT license**. The AIM-W format (`.aimw`) in this repo is only a **conversion layer / packing format** for those weights, not a model we trained. The converter is `tools/bitnet2aimw.py`; download the weights from Microsoft's official channel (or the hf-mirror.com mirror).
+- Self-trained model weights (152M etc.) are **not released in this repo**; the repo releases the complete pipeline that trains them.
+- The knowledge base is self-built from Chinese Wikipedia dumps, **CC-BY-SA**, crediting Wikipedia contributors. See [NOTICE.md](NOTICE.md).
 
-## 协议矩阵
+## License matrix
 
-| 资产 | 协议 |
+| Asset | License |
 |---|---|
-| 全部代码 | **AGPL-3.0**——把它做进你的联网产品？要么开源你的衍生，要么来谈商业授权 |
-| `lab/docs/` 研究文档 | CC-BY-NC 4.0（署名-非商业） |
-| 微软权重（外部，自行下载） | MIT，归 Microsoft |
-| 维基内容（自建库，源自 dump） | CC-BY-SA，归维基百科贡献者 |
+| All code | **AGPL-3.0** — want to embed it in your online product? Either open-source your derivative or talk business licensing |
+| `lab/docs/` research documents | CC-BY-NC 4.0 (attribution, non-commercial) |
+| Microsoft weights (external, self-downloaded) | MIT, owned by Microsoft |
+| Wiki content (self-built store, from dumps) | CC-BY-SA, owned by Wikipedia contributors |
 
-## 纪律
+## Discipline
 
-- 爬虫遵守 robots.txt，拒绝不级联渲染；搜索页仅作查询接口，正文一律来自第三方页面
-- 质量闸 fail-closed：查重 + 五信号（残文长度/壳密度/句子结构/信息密度/菜单味），全不过不入库
-- 知识库引擎、插件、爬虫全部纯 stdlib，零第三方依赖
+- The crawler obeys robots.txt and refuses to bypass; search pages are query interfaces only, page bodies always come from third-party sites
+- Quality gates are fail-closed: dedup + five signals (residual length / shell density / sentence structure / information density / menu smell); failing any gate means the content never enters the store
+- Knowledge base engine, plugins, and crawler are all pure stdlib, zero third-party dependencies
 
-## 已知边界（诚实清单）
+## Known limits (honest list)
 
-- 端侧参数上限由**内存和核数**决定，不是三值核的极限：这台 8GB 双核机器上 2B 是舒适上限，更大内存/更多核的机器直接上更大的模型（栈里没有一行硬件特定代码）；本条说的是这台测试机的舒适区，管线供料没问题，读多深是模型的事
-- support.mozilla.org 等 JS 环境检测站抓不了（技术墙，非 robots）
-- gov.cn 部分站点 SSL 证书链异常，按安全纪律拒绝而非跳过校验
-- Windows 优先（Edge 渲染级联用系统自带浏览器）；Linux 编译过，渲染级联需装 Chromium
+- The edge-side parameter ceiling is set by **memory and core count**, not by the ternary kernel: 2B is the comfortable ceiling on this 8GB dual-core test machine; machines with more RAM/cores go straight to bigger models (zero hardware-specific code in the stack). The pipeline's feeding is fine — how deep the model reads is the model's business
+- support.mozilla.org and similar JS-environment-detection sites cannot be crawled (technical wall, not robots)
+- Some gov.cn sites have broken SSL certificate chains — rejected per security discipline rather than skipping verification
+- Windows-first (the render cascade uses Edge); Linux compiles, the render cascade needs Chromium
 
-## 联系 / Contact
+## Contact
 
-- 商务合作 / 商业授权 / 问题反馈：**t8070824207@qq.com**
-- 运营主体：深圳市罗湖区清水河街道锋爪数创数字技术工作室（个体工商户）
-- 统一社会信用代码：92440300MAKDFBKUXT
+- Business / licensing / feedback: **t8070824207@qq.com**
+- Operating entity: Fengzhua Digital Technology Studio (锋爪数创数字技术工作室), Luohu District, Shenzhen, China
+- Unified Social Credit Code: 92440300MAKDFBKUXT
