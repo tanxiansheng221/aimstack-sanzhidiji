@@ -1,3 +1,5 @@
+> [中文版](weights.zh.md)
+
 # Microsoft Weight Conversion Manual
 
 **Attribution notice (read first)**: BitNet b1.58 2B weights © Microsoft Corporation (MIT). This repository only provides the **conversion layer** for the AIM-W packing format and the inference kernel — it does not train, modify, or distribute the weights themselves.

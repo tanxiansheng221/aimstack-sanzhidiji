@@ -1,3 +1,5 @@
+> [中文版](corpus.zh.md)
+
 # Corpus Builder Manual
 
 All corpus **generators** are open-source and reproducible; the datasets themselves are not committed (each has upstream licensing, see NOTICE.md) — scripts pull from official channels.

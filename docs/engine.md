@@ -1,3 +1,5 @@
+> [中文版](engine.zh.md)
+
 # C Engine Manual
 
 A local inference engine in pure C with zero third-party runtime. All numbers below come from real measurements on a 2018 dual-core 8GB laptop (see the Hardware Statement in the README).

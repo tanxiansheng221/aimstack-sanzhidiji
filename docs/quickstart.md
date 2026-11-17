@@ -1,3 +1,5 @@
+> [中文版](quickstart.zh.md)
+
 # Quick Start
 
 Goal: from clone to running server within 10 minutes. Building the knowledge base and converting weights are two independent one-time preparations (about 1 hour each, depending on bandwidth and machine).

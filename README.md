@@ -1,6 +1,6 @@
 # aimstack
 
-> Fully self-built local AI stack — from scratch: ternary C inference engine (zero third-party runtime), plugin bus, multi-engine web crawler with quality gates, FTS knowledge base, and the complete training pipeline + research logs.
+> A build log first, runnable proof second. 117 chapters written as it happened, and a fully self-built local AI stack that backs every claim: ternary C inference engine (zero third-party runtime), plugin bus, multi-engine web crawler with quality gates, FTS knowledge base, and the complete training pipeline — positive **and** negative results shipped together.
 
 No frameworks, no PyTorch dependency (used only for reconciliation during development, zero external runtime in the product), no off-the-shelf engine — the C inference core, plugin bus, crawler, knowledge base, and trainer are all hand-written. The dev machine is a dual-core laptop bought in 2018, never replaced.
 
@@ -87,6 +87,8 @@ Numbers this machine actually held:
 - Ternary-core SIMD fast path: **85.53 tok/s** (optimized 41× from 2.08, C/NumPy bit-exact reconciliation kept green)
 - BitNet b1.58 2B (AIM-W 0.87GB): **3.20 tok/s** dual-worker (serial 1.99, in-engine self-calibration guard)
 - Local training sweet spot (this machine measured): **5M-30M params on 2 cores / 8GB**; a 152M full run would take ~35 days locally — the sweet spot scales with CPU and RAM (double the cores and memory and the model grows with it); training goes to free cloud containers, the stack itself sets no hardware floor
+
+**3.20 tok/s is not a speed claim.** It is proof that the full chain — ternary inference + FTS knowledge base + plugin bus — runs end to end, offline, on an 8GB 2018 machine, no cloud relay. Anyone can go higher; this is the floor being held.
 
 **The floor is held by this machine; the ceiling is yours to test** — the stack contains zero hardware-specific code. Multi-core, AVX-512, and large-memory machines are welcome to report real numbers.
 

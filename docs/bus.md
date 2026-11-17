@@ -1,3 +1,5 @@
+> [中文版](bus.zh.md)
+
 # Plugin Bus Manual
 
 A plugin system of ~100 lines of C plus pure-stdlib Python. Design principle: **the model does not perceive plugins; the router decides what gets called**.

@@ -1,3 +1,5 @@
+> [中文版](kb.zh.md)
+
 # External Knowledge Base Manual
 
 Two-layer store design: a **fixed base** (finished wiki store, 776k cards) + a **dynamic store** (user uploads + crawler increments, swappable as a whole at any time). Retrieval queries both stores in parallel and merges results sorted by score.

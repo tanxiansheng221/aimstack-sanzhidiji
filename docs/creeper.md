@@ -1,3 +1,5 @@
+> [中文版](creeper.zh.md)
+
 # Search Engine / Crawler Manual
 
 Self-built crawler line: multi-engine search entry → parallel fetch → Edge render cascade → five-signal quality gate → ingest. Pure stdlib throughout (the render cascade uses the system Edge — no browser downloads).

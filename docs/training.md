@@ -1,3 +1,5 @@
+> [中文版](training.zh.md)
+
 # Training Assets Manual
 
 The training pipeline is fully open: the no-autograd training stack, ten-subject curriculum generators, corpus builders, and the **complete archive of positive and negative results alike**. This page is a pitfall-avoidance list for reproducers — every item is backed by a measured campaign report (see `lab/docs/`).
