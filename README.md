@@ -71,7 +71,7 @@ Details: [docs/quickstart.md](docs/quickstart.md)
 | `lab/seeds/` | Experiment seeds (op18 dual-seed / cot_mech replication) | [docs/training.md](docs/training.md) |
 | `lab/results/` | Experiment result JSONs (evidence) | — |
 | `lab/docs/` | 117-chapter CPU-native research log + E6 negative-results dossier | Read this before touching the code |
-| `tools/` | Probes / benchmark scripts | — |
+| `tools/` | Probes / benchmark scripts · `gpu_backend.py` (optional GPU/PyTorch inference, token-exact with the C engine) | — |
 
 ## Hardware statement: a 2018 laptop holds the floor
 
@@ -92,7 +92,7 @@ Numbers this machine actually held:
 
 **3.20 tok/s is not a speed claim.** It is proof that the full chain — ternary inference + FTS knowledge base + plugin bus — runs end to end, offline, on an 8GB 2018 machine, no cloud relay. Anyone can go higher; this is the floor being held.
 
-**The floor is held by this machine; the ceiling is yours to test** — the stack contains zero hardware-specific code. Multi-core, AVX-512, and large-memory machines are welcome to report real numbers.
+**The ceiling, demonstrated:** the same AIM-W file runs on an AMD Radeon Pro W7900 (48GB, free cloud container) via the optional PyTorch backend [`tools/gpu_backend.py`](tools/gpu_backend.py): **13.68 tok/s with 256/256 greedy tokens bit-identical to the C engine** (fp32 compute path, bf16 weights; ~8× this laptop's C-engine speed). A faster bf16-compute path reaches **32.96 tok/s** (2.4×) but diverges from the C engine at token 30 (argmax flips on near-tie logits) — reported, not hidden; the parity discipline only blesses the fp32 path. Weights were byte-identical to the locally converted file (MD5 match) after on-site reconversion from ModelScope (36 MB/s; scp to this container throttled to ~20 KB/s).
 
 ## Training assets (fully open)
 
