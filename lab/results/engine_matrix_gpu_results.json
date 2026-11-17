@@ -1,0 +1,30 @@
+{
+  "experiment": "engine_matrix_gpu",
+  "date": "2026-11-17",
+  "what": "Three inference engines x three questions x three tests, all reconciled token-by-token against the Windows C-engine truth (aimp_probe.exe, m2b_tern.aimw, MD5 bdbf1533efe4a2eef2d04842f9b14d0f)",
+  "hardware": "AMD Radeon Pro W7900 (gfx1100, 48GB VRAM), ROCm 7.2.1 driver 6.16, EPYC 9334 128-core, 503GB RAM, free cloud container",
+  "questions": {
+    "P1": {"text": "The capital of France is", "ids": [128000, 791, 6864, 315, 9822, 374]},
+    "P2": {"text": "What is 12 + 27? The answer is", "ids": [128000, 3923, 374, 220, 717, 489, 220, 1544, 30, 578, 4320, 374]},
+    "P3": {"text": "你好，请用一句话介绍一下你自己", "ids": [128000, 57668, 53901, 39045, 11883, 15120, 124684, 117814, 111230, 57668, 102099]}
+  },
+  "results": [
+    {"engine": "C-Linux (gcc 13.3, -O2, bus stub)", "q": "P1", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 1.04},
+    {"engine": "C-Linux (gcc 13.3, -O2, bus stub)", "q": "P2", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 1.00},
+    {"engine": "C-Linux (gcc 13.3, -O2, bus stub)", "q": "P3", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 1.02},
+    {"engine": "PyTorch 2.9.1+rocm (fp32 compute)", "q": "P1", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 13.76},
+    {"engine": "PyTorch 2.9.1+rocm (fp32 compute)", "q": "P2", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 13.69},
+    {"engine": "PyTorch 2.9.1+rocm (fp32 compute)", "q": "P3", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 13.72},
+    {"engine": "PyTorch 2.9.1+rocm (bf16 compute)", "q": "P1", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 34.01},
+    {"engine": "PyTorch 2.9.1+rocm (bf16 compute)", "q": "P2", "gen16_parity": "16/16 EXACT", "gen256_parity": "256/256 EXACT", "gen256_tok_s": 33.89},
+    {"engine": "PyTorch 2.9.1+rocm (bf16 compute)", "q": "P3", "gen16_parity": "16/16 EXACT", "gen256_parity": "57/256 (argmax flip at token 57, near-tie logits)", "gen256_tok_s": 32.94}
+  ],
+  "score": "17/18 EXACT; the single miss is the documented bf16 near-tie divergence on the Chinese prompt",
+  "notes": [
+    "Windows C engine (MSVC) and Linux C engine (gcc 13) agree token-for-token on all three prompts — cross-platform, cross-compiler portability of the C core proven",
+    "fp32 compute path is the parity-blessed GPU path (~13.7 tok/s, ~8x the laptop C engine); bf16 is the fast path (~33-34 tok/s) whose divergence point is prompt-dependent (token 30 on meaning-of-life, token 57 on the Chinese prompt, none on P1/P2 here)",
+    "engine/main.c needed a forward declaration of run_gen for gcc -std=c23 (MSVC only warned); bus.c is Windows-only, Linux build uses a 3-function stub",
+    "tokenizer: llama3_tok.py (pure stdlib) encodes all three prompts; decode verified round-trip",
+    "truth generation on laptop: 1.11-1.72 tok/s per prompt, 256 tokens each"
+  ]
+}

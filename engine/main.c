@@ -12,6 +12,8 @@
 #include <time.h>
 
 static int run_tok(const char *path, int enc, const char *text);
+static int run_gen(const char *path, const char *ids_csv, uint32_t n_next,
+                   uint32_t spec_k);
 
 static void print_arch(const aim_gguf *g) {
     const aim_kv *arch = aim_gguf_find(g, "general.architecture");
