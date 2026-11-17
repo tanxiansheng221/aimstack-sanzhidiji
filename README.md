@@ -29,6 +29,8 @@ Python plugins (pure stdlib)
 
 The model is unaware of the plugins: routing (deterministic code) decides what to call, plugins feed material to the model, and the model only reads and writes answers. **Model = reader, plugins = librarians.**
 
+**Zero cloud relay anywhere in the loop.** Model weights load from local disk, knowledge-base retrieval is a local FTS store, and plugins are local processes — the only component that touches the internet is the optional `web.search` plugin. Chat, KB-grounded answers, and plugin calls run with the network cable unplugged; the demo video above shows the whole chain on the 8GB 2018 machine.
+
 ## Quick start
 
 ```bash
