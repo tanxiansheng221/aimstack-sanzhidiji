@@ -1,0 +1,7 @@
+{
+  "kb.search": "python3 /workspace/aimstack/plugins/kb_search.py %s",
+  "web.search": "python3 /workspace/aimstack/plugins/web_search.py %s",
+  "demo.time": "python3 /workspace/aimstack/plugins/demo_time.py %s",
+  "kb.add": "python3 /workspace/aimstack/plugins/kb_add.py %s",
+  "web.ingest": "python3 /workspace/aimstack/plugins/web_ingest.py %s"
+}

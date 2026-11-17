@@ -7,7 +7,44 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#if defined(_WIN32)
 #include <process.h>
+#else
+/* 容器/seccomp 环境里 glibc popen (posix_spawn/clone3) 可能 EINVAL,
+ * 这里手写 fork+exec+/bin/sh + 管道, 语义对齐 popen("rb")/pclose */
+#include <unistd.h>
+#include <sys/wait.h>
+#define _getpid getpid
+static pid_t g_bus_child = -1;
+static FILE *bus_popen_sh(const char *cmd) {
+    int fd[2];
+    if (pipe(fd) != 0) return NULL;
+    pid_t pid = fork();
+    if (pid < 0) { close(fd[0]); close(fd[1]); return NULL; }
+    if (pid == 0) {
+        close(fd[0]);
+        if (dup2(fd[1], 1) < 0) _exit(127);
+        close(fd[1]);
+        execl("/bin/sh", "sh", "-c", cmd, (char *)NULL);
+        _exit(127);
+    }
+    close(fd[1]);
+    g_bus_child = pid;
+    return fdopen(fd[0], "rb");
+}
+static int bus_pclose_sh(FILE *f) {
+    if (!f) return -1;
+    fclose(f);
+    int st = 0;
+    if (g_bus_child > 0) {
+        waitpid(g_bus_child, &st, 0);
+        g_bus_child = -1;
+    }
+    return st;
+}
+#define _popen(cmd, mode) bus_popen_sh(cmd)
+#define _pclose(f) bus_pclose_sh(f)
+#endif
 
 #define AIM_BUS_MAXCAPS 32
 typedef struct { char name[64]; char cmd[512]; } aim_caprec;
@@ -98,8 +135,19 @@ int aim_bus_call(const char *cap, const char *query_json, char *resp,
     /* query -> 临时文件 (UTF-8 内容, ANSI 路径) */
     char qpath[1100];
     const char *td = getenv("TEMP");
+#if !defined(_WIN32)
+    if (!td || !*td) td = getenv("TMPDIR");
+    if (!td || !*td) td = "/tmp";
+#else
     if (!td || !*td) td = ".";
-    sprintf(qpath, "%s\\aim_bus_q_%ld_%ld.json", td, (long)_getpid(), ++g_callno);
+#endif
+    {
+        char sep[2] = {0, 0};
+        size_t tl = strlen(td);
+        if (tl == 0 || (td[tl - 1] != '/' && td[tl - 1] != '\\')) sep[0] = '/';
+        sprintf(qpath, "%s%saim_bus_q_%ld_%ld.json", td, sep,
+                (long)_getpid(), ++g_callno);
+    }
     FILE *f = fopen(qpath, "wb");
     if (!f) return 1;
     fwrite(query_json, 1, strlen(query_json), f);
