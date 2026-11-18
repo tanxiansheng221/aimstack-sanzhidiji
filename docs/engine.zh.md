@@ -25,6 +25,16 @@ build.cmd          # 默认 x64
 
 验收标准是「双架构编译」：x64 与 ARM64 都应能编译通过（真机验证见研究日志）。
 
+### Linux 构建
+
+```bash
+gcc -O2 -o aimp_probe engine/aimw.c engine/forward.c engine/gguf.c engine/main.c engine/tokenizer.c engine/bus.c -lm
+```
+
+- Ubuntu 24.04 / gcc 13（128 核 EPYC 容器）实机验证：Windows（MSVC）与 Linux（gcc）产物**生成序列逐 token 一致**——跨编译器对齐也是验收项
+- gcc 默认 C23，隐式函数声明是 error（MSVC 只给警告）：static 辅助函数都要前置声明——`run_gen` 是实际缺失并已补的那个
+- Linux 上引擎**纯串行**：工人池是 Windows 线程（`CreateThread`），`#else` 分支就是普通串行循环——`AIM_WORKERS` 是 Windows 专属开关。POSIX 多工人 = pthread 移植（尚未做）
+
 ## 三值核
 
 权重为三值 {-1, 0, +1}，打包进 2-bit（AIM-W 格式，`aimw.c`）。推理是查表 + 整数累加，无浮点权重乘法。

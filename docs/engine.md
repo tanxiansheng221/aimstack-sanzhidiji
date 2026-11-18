@@ -25,6 +25,16 @@ build.cmd          # x64 by default
 
 The acceptance criterion is "dual-architecture compilation": both x64 and ARM64 should compile (real-device verification in the research logs).
 
+### Linux build
+
+```bash
+gcc -O2 -o aimp_probe engine/aimw.c engine/forward.c engine/gguf.c engine/main.c engine/tokenizer.c engine/bus.c -lm
+```
+
+- Verified live on Ubuntu 24.04 / gcc 13 (128-core EPYC container): the Windows (MSVC) and Linux (gcc) binaries produce **token-for-token identical** generation — cross-compiler parity is part of the acceptance
+- gcc defaults to C23 where implicit function declarations are errors (MSVC only warns): every `static` helper needs a forward declaration — `run_gen`'s is the one that was actually missing and fixed
+- On Linux the engine runs **serial**: the worker pool is Windows-threads (`CreateThread`) and its `#else` branch is a straight serial loop — `AIM_WORKERS` is a Windows-only knob. Multi-worker on POSIX would be a pthread port (not yet done)
+
 ## Ternary core
 
 Weights are ternary {-1, 0, +1}, packed into 2 bits (AIM-W format, `aimw.c`). Inference is table lookup + integer accumulation — no floating-point weight multiplication.

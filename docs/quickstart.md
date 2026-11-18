@@ -40,6 +40,10 @@ python ui/server.py                 # http://127.0.0.1:8600
 
 Open `http://127.0.0.1:8600` in your browser.
 
+### Optional: GPU inference (needs PyTorch)
+
+The server above runs the C engine (CPU). On a GPU machine you can also run the same AIM-W file through the optional PyTorch backend — `python tools/gpu_backend.py --aimw data/m2b_tern.aimw --prompt-ids ... --steps 256 --device cuda --compute fp32` gives ~8× the laptop C-engine speed with token-exact parity. See [docs/gpu.md](gpu.md). PyTorch is the repo's only third-party runtime and lives only in this optional path.
+
 ## Acceptance checklist (30 seconds each)
 
 | # | Action | Expected |

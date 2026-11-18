@@ -39,6 +39,10 @@ python ui/server.py                 # http://127.0.0.1:8600
 
 浏览器打开 `http://127.0.0.1:8600`。
 
+### 可选：GPU 推理（需要 PyTorch）
+
+上面起的服务跑的是 C 引擎（CPU）。有 GPU 的机器可以把同一个 AIM-W 文件走可选的 PyTorch 后端——`python tools/gpu_backend.py --aimw data/m2b_tern.aimw --prompt-ids ... --steps 256 --device cuda --compute fp32` 速度 ≈ 本机 C 引擎 8× 且 token 逐位对齐。见 [docs/gpu.zh.md](gpu.zh.md)。PyTorch 是全仓唯一第三方运行时，且只在这个可选路径里。
+
 ## 验收清单（每项 30 秒）
 
 | # | 动作 | 预期 |
