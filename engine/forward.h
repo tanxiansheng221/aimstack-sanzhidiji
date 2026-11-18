@@ -21,6 +21,7 @@ typedef struct {
     uint64_t n_elems;
     float    scale;        /* ternary per-tensor; 其余为 0 */
     float    lut[16];      /* Q4KV2: 点阵 f16 解码缓存; 其余为 0 */
+    const uint8_t *alt;    /* mt patch: optional 4-bit copy of a Q8 tensor (output layer), NULL otherwise */
 } aim_tref;
 
 typedef struct {
