@@ -33,8 +33,8 @@ Python 插件: argv[1]=查询文件路径 → 处理 → stdout 吐一个 JSON �
 
 ## Linux / 容器
 
-- `bus.c` 可在 Linux 编译：查询临时文件走 `TMPDIR`（回落 `/tmp`），子进程由手写的 **fork + execl("/bin/sh") + 管道 + waitpid** 拉起
-- 为什么不用现成 `popen()`？部分 seccomp 沙箱容器（包括私有云 GPU 容器）里 glibc 的 popen 直接报 `EINVAL`（它走的 posix_spawn/clone3 被拦）——连 `popen("true")` 都死，而 Python 的 subprocess 活得好好的。手写 fork/exec 路径到处能用；Windows `#ifdef` 分支一字未动
+- `bus.c` 可在 Linux 编译：查询临时文件走 `TMPDIR`（回落 `/tmp`），子进程由自研实现的 **fork + execl("/bin/sh") + 管道 + waitpid** 拉起
+- 为什么不用现成 `popen()`？部分 seccomp 沙箱容器（包括私有云 GPU 容器）里 glibc 的 popen 直接报 `EINVAL`（它走的 posix_spawn/clone3 被拦）——连 `popen("true")` 都死，而 Python 的 subprocess 活得好好的。自研 fork/exec 路径到处能用；Windows `#ifdef` 分支一字未动
 - Linux 注册表：`plugins/caps.linux.json`（python3 + 绝对路径）。部署时在目标机上覆盖 `plugins/caps.json`，或用 `AIM_BUS_CAPS` 指过去。引擎默认按 cwd 找注册表，所以以仓库根为 cwd 运行
 
 ## 插件契约（三条）

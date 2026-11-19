@@ -2,7 +2,7 @@
 
 > A build log first, runnable proof second. 117 chapters written as it happened, and a fully self-built local AI stack that backs every claim: ternary C inference engine (zero third-party runtime), plugin bus, multi-engine web crawler with quality gates, FTS knowledge base, and the complete training pipeline — positive **and** negative results shipped together.
 
-No frameworks, no PyTorch dependency (used only for reconciliation during development, zero external runtime in the product), no off-the-shelf engine — the C inference core, plugin bus, crawler, knowledge base, and trainer are all hand-written. The dev machine is a dual-core laptop bought in 2018, never replaced.
+No frameworks, no PyTorch dependency (used only for reconciliation during development, zero external runtime in the product), no off-the-shelf engine — the inference core, plugin bus, crawler, knowledge base, and trainer are all self-developed in-house: pure C and pure-stdlib code with zero third-party dependencies, verifiable straight from the source tree. The dev machine is a dual-core laptop bought in 2018, never replaced.
 
 🎬 **Full-chain UI demo (6:59, online)** — direct chat answers / KB-grounded answers / web search-crawl-ingest-answer / direct plugin calls, all screen-recorded on the 2018 dual-core laptop:
 
@@ -96,7 +96,7 @@ Numbers this machine actually held:
 
 ## Training assets (fully open)
 
-- No-autograd training stack (hand-written backprop, 29-parameter selftest reconciliation, rel 5.7e-7)
+- No-autograd training stack (backprop implemented from scratch, no framework, 29-parameter selftest reconciliation, rel 5.7e-7)
 - Ten-subject curriculum generators + corpus builder suite (modular arithmetic / causal / constraint / graph / logic / math / planning / sequences / state machines / code)
 - Full archive: corpus-autopsy discipline, replay ratios, three negative-return continuation recipes, four-arm arithmetic comparison with zero generalization
 - See [docs/training.md](docs/training.md) and [lab/docs/](lab/docs/)

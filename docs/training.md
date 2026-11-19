@@ -9,7 +9,7 @@ The training pipeline is fully open: the no-autograd training stack, ten-subject
 ```
 lab/train/
 ├── aim_train_real.py        main trainer (AIM-W ternary / fp16, dual hardware)
-├── aim_manual.py            hand-written backprop stack (selftest: 29 params, rel 5.7e-7)
+├── aim_manual.py            from-scratch backprop stack, no autograd framework (selftest: 29 params, rel 5.7e-7)
 ├── build_subject_curriculum.py + curriculum_*_lab.py   ten-subject curriculum generation
 │                             (modular arithmetic / causal / constraint / graph / logic / math / planning / sequences / state machines / code)
 ├── build_lang*_corpus.py    language / dialogue / slot / refusal corpus builders

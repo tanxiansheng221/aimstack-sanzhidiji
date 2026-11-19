@@ -9,7 +9,7 @@
 ```
 lab/train/
 ├── aim_train_real.py        主训练器 (AIM-W 三值 / fp16, 双硬件)
-├── aim_manual.py            手写反传栈 (selftest 29 参数对账 rel 5.7e-7)
+├── aim_manual.py            自研反传栈，零 autograd 框架 (selftest 29 参数对账 rel 5.7e-7)
 ├── build_subject_curriculum.py + curriculum_*_lab.py   十科课程生成
 │                             (模运算/因果/约束/图/逻辑/数学/规划/序列/状态机/代码)
 ├── build_lang*_corpus.py    语言/对话/槽位/拒绝语料构建

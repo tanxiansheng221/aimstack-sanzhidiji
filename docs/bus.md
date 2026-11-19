@@ -33,8 +33,8 @@ Caller receives the JSON from stdout ({"cap":"cap.name", ...})
 
 ## Linux / containers
 
-- `bus.c` compiles on Linux: temp query file under `TMPDIR` (falls back to `/tmp`), subprocess spawned by hand-written **fork + execl("/bin/sh") + pipe + waitpid**
-- Why not plain `popen()`? Some seccomp-sandboxed containers (private cloud GPU containers included) make glibc's popen fail with `EINVAL` (its posix_spawn/clone3 path is blocked) — even `popen("true")` dies, while Python's subprocess survives. The hand-rolled fork/exec path works everywhere; the Windows `#ifdef` branch is unchanged
+- `bus.c` compiles on Linux: temp query file under `TMPDIR` (falls back to `/tmp`), subprocess spawned by a self-implemented **fork + execl("/bin/sh") + pipe + waitpid**
+- Why not plain `popen()`? Some seccomp-sandboxed containers (private cloud GPU containers included) make glibc's popen fail with `EINVAL` (its posix_spawn/clone3 path is blocked) — even `popen("true")` dies, while Python's subprocess survives. The self-implemented fork/exec path works everywhere; the Windows `#ifdef` branch is unchanged
 - Registry for Linux: `plugins/caps.linux.json` (python3 + absolute paths). Deploy by copying it over `plugins/caps.json` on the target machine, or point `AIM_BUS_CAPS` at it. The engine resolves the default registry relative to its cwd, so run with cwd = repo root
 
 ## Plugin contract (three rules)
